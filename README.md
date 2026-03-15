@@ -36,12 +36,20 @@ Modern, responsive professional portfolio built with React and Vite. Features a 
    npm run build
    ```
 
-## Deployment (GitHub Pages)
+## Deployment (Vercel)
 
-This project is configured to deploy to GitHub pages under the `/my-portfolio/` base path.
+This project is configured to deploy seamlessly to Vercel.
 
-To deploy:
-```bash
-npm run deploy
-```
-*(Requires the `gh-pages` package).*
+1. Install the Vercel CLI:
+   ```bash
+   npm i -g vercel
+   ```
+2. Run the Vercel command from your project root:
+   ```bash
+   vercel
+   ```
+3. During setup, Vercel will prompt you to set your Environment Variables. Be sure to paste in your `VITE_GROQ_API_KEY`!
+4. To deploy to production:
+   ```bash
+   vercel --prod
+   ```
