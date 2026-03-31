@@ -32,6 +32,9 @@ SKILLS:
 PROJECTS:
 1. AI-Powered Role-Based LMS (Agentic AI) - Microservices LMS with RAG-based AI assistant, agentic workflows, LLM orchestration, vector databases
 2. Distributed Network Diagnostics Platform - Microservices for ping/traceroute/DNS, Spring Boot + Node.js, JWT, Docker, Prometheus
+3. RoleReadyResume - A full-stack AI-powered AI resume tailoring app using React, Vite, Node.js, and the Groq API. (GitHub: https://github.com/KesavaSravan/RoleReadyResume)
+4. MCP Temperature Tool Server - Model Context Protocol (MCP) server in Python/FastAPI for async OpenWeatherMap operations. (GitHub: https://github.com/KesavaSravan/mcp-temperature-tool)
+5. Deep Research MCP Server - Production-quality Deep Research MCP server with source credibility ranking using Python, FastAPI, and JSON-RPC. (GitHub: https://github.com/KesavaSravan/deepsearch-mcp)
 
 EDUCATION:
 - B.Tech Electrical and Computer Engineering, Amrita Vishwa Vidyapeetham, 2024, CGPA: 7.5/10
