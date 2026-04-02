@@ -639,15 +639,6 @@ html {
   .floating-nav {
     left: 0.5rem; /* Move it slightly closer to the edge on small screens */
   }
-
-  .floating-nav:hover {
-    width: 60px; /* Prevent expansion */
-    padding: 1.5rem 0.5rem;
-  }
-
-  .nav-label {
-    display: none; /* Hide labels entirely to avoid layout shifts */
-  }
 }
 
 .floating-nav:hover {
