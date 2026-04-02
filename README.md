@@ -3,11 +3,12 @@
 A highly polished, professional portfolio web application built with React, Vite, and Framer Motion. This project features a clean glassmorphism aesthetic, advanced micro-interactions, an OLED-optimized dark theme, and a fully integrated AI chatbot assistant.
 
 ## ✨ Key Features
-- **Premium UI/UX Design**: Uses modern `backdrop-filter` glassmorphism, floating navigation bars, and a "Bento Box" grid layout to present information beautifully.
+- **Premium UI/UX Design**: Uses modern `backdrop-filter` glassmorphism and a "Bento Box" grid layout to present information beautifully.
+- **Interactive Navigation**: A floating, vertically draggable navigation bar with elastic bounce physics and screen boundary constraints, improving mobile and desktop navigation.
+- **Multi-Page Routing**: Implements React Router for seamless navigation to a dedicated `/projects` page and anchors without full page reloads.
 - **Fluid Animations**: Scroll-linked fade and stagger animations powered by `framer-motion` ensure elements organically cascade into view.
 - **AI Chatbot Assistant**: Embedded conversational AI powered by Groq (`llama-3.3-70b-versatile`) acts as a personal agent, immediately answering recruiter questions about experience and skills.
-- **Client-Side Routing**: Implements React Router for seamless navigation between the Home view and detailed Projects lists without reloading.
-- **Dynamic Theming**: An intuitive structural toggle between deep OLED Dark mode and translucent Light mode. 
+- **Dynamic Theming**: An intuitive structural toggle between deep OLED Dark mode and translucent Light mode.
 
 ## 🛠 Tech Stack
 - **Frontend Core**: React 19, React Router v7, Vite
