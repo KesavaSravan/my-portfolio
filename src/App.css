@@ -614,12 +614,21 @@ html {
   transform: translateY(-2px);
 }
 
-.floating-nav {
+.floating-nav-wrapper {
   position: fixed;
-  top: 50%;
-  left: 1.5rem;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
   z-index: 1100;
+  pointer-events: none;
+}
+
+.floating-nav {
+  position: relative;
+  left: 1.5rem;
+  pointer-events: auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

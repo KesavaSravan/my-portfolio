@@ -1,5 +1,5 @@
 import { Github, Linkedin, Mail, Phone, Sun, Moon, Download, MapPin, Calendar, ArrowRight, Home, Code, Briefcase } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import ChatBot from "./ChatBot";
@@ -207,6 +207,7 @@ function HomeContent() {
 export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(true);
   const location = useLocation();
+  const dragAreaRef = useRef(null);
 
   useEffect(() => {
     if (location.hash) {
@@ -249,25 +250,34 @@ export default function Portfolio() {
     <div className={`portfolio-container ${darkMode ? 'dark-theme' : 'light-theme'}`}>
 
       {/* Floating Navbar */}
-      <nav className="floating-nav">
-        <Link to="/" onClick={handleScrollToTop} title="Home">
-          <div className="nav-icon"><Home size={20} /></div>
-          <span className="nav-label">Home</span>
-        </Link>
-        <Link to="/#skills" onClick={handleScrollToSkills} title="Skills">
-          <div className="nav-icon"><Code size={20} /></div>
-          <span className="nav-label">Skills</span>
-        </Link>
-        <Link to="/projects" onClick={handleScrollToProjects} title="Projects">
-          <div className="nav-icon"><Briefcase size={20} /></div>
-          <span className="nav-label">Projects</span>
-        </Link>
-        <div className="nav-divider"></div>
-        <button onClick={() => setDarkMode(!darkMode)} className="theme-toggle-vertical" title="Toggle Theme">
-          <div className="nav-icon">{darkMode ? <Sun size={20} /> : <Moon size={20} />}</div>
-          <span className="nav-label">{darkMode ? "Light Mode" : "Dark Mode"}</span>
-        </button>
-      </nav>
+      <div className="floating-nav-wrapper" ref={dragAreaRef}>
+        <motion.nav 
+          className="floating-nav"
+          drag="y"
+          dragConstraints={dragAreaRef}
+          dragElastic={0.1}
+          whileDrag={{ cursor: 'grabbing' }}
+          style={{ cursor: 'grab' }}
+        >
+          <Link to="/" onClick={handleScrollToTop} title="Home">
+            <div className="nav-icon"><Home size={20} /></div>
+            <span className="nav-label">Home</span>
+          </Link>
+          <Link to="/#skills" onClick={handleScrollToSkills} title="Skills">
+            <div className="nav-icon"><Code size={20} /></div>
+            <span className="nav-label">Skills</span>
+          </Link>
+          <Link to="/projects" onClick={handleScrollToProjects} title="Projects">
+            <div className="nav-icon"><Briefcase size={20} /></div>
+            <span className="nav-label">Projects</span>
+          </Link>
+          <div className="nav-divider"></div>
+          <button onClick={() => setDarkMode(!darkMode)} className="theme-toggle-vertical" title="Toggle Theme">
+            <div className="nav-icon">{darkMode ? <Sun size={20} /> : <Moon size={20} />}</div>
+            <span className="nav-label">{darkMode ? "Light Mode" : "Dark Mode"}</span>
+          </button>
+        </motion.nav>
+      </div>
 
       <Routes>
         <Route path="/" element={
