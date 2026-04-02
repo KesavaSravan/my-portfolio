@@ -1,20 +1,22 @@
-# Kesava Sravan - Professional Portfolio
+# Kesava Sravan - Premium AI-Powered Portfolio
 
-Modern, responsive professional portfolio built with React and Vite. Features a dark/light mode toggle and an integrated AI Assistant powered by Groq and the `llama-3.3-70b-versatile` model.
+A highly polished, professional portfolio web application built with React, Vite, and Framer Motion. This project features a clean glassmorphism aesthetic, advanced micro-interactions, an OLED-optimized dark theme, and a fully integrated AI chatbot assistant.
 
-## Features
-- **Responsive Design**: Looks great on desktop and mobile.
-- **Theme Toggle**: Switch between Dark and Light mode (defaults to Dark).
-- **AI Chatbot**: A slide-up AI assistant trained on Kesava's resume and experience, providing instant, conversational answers to visitors.
-- **Dynamic Projects & Experience Sections**: Clear, readable layouts for showcasing professional work.
-- **Resume Download**: One-click download of the PDF resume.
+## ✨ Key Features
+- **Premium UI/UX Design**: Uses modern `backdrop-filter` glassmorphism, floating navigation bars, and a "Bento Box" grid layout to present information beautifully.
+- **Fluid Animations**: Scroll-linked fade and stagger animations powered by `framer-motion` ensure elements organically cascade into view.
+- **AI Chatbot Assistant**: Embedded conversational AI powered by Groq (`llama-3.3-70b-versatile`) acts as a personal agent, immediately answering recruiter questions about experience and skills.
+- **Client-Side Routing**: Implements React Router for seamless navigation between the Home view and detailed Projects lists without reloading.
+- **Dynamic Theming**: An intuitive structural toggle between deep OLED Dark mode and translucent Light mode. 
 
-## Tech Stack
-- Frontend: React 19, Vite
-- Styling: Custom CSS (App.css, ChatBot.css), Lucide React (Icons)
-- AI Integration: Groq API (`llama-3.3-70b-versatile`)
+## 🛠 Tech Stack
+- **Frontend Core**: React 19, React Router v7, Vite
+- **Animations & UX**: Framer Motion
+- **Styling**: Vanilla CSS (Global Variables, Glassmorphism utilities, CSS Grid/Flexbox)
+- **Icons**: Lucide React
+- **AI Integration**: Groq API 
 
-## Local Setup
+## 🚀 Local Setup
 
 1. **Clone the repository**
 2. **Install dependencies**:
@@ -36,20 +38,23 @@ Modern, responsive professional portfolio built with React and Vite. Features a 
    npm run build
    ```
 
-## Deployment (Vercel)
+## 🌐 Deployment (Vercel)
 
-This project is configured to deploy seamlessly to Vercel.
+This application is configured with a `vercel.json` file for single-page application (SPA) routing, automatically rewriting all requests to `/index.html`.
 
 1. Install the Vercel CLI:
    ```bash
    npm i -g vercel
    ```
-2. Run the Vercel command from your project root:
+2. Run the deployment command from your project root:
    ```bash
    vercel
    ```
-3. During setup, Vercel will prompt you to set your Environment Variables. Be sure to paste in your `VITE_GROQ_API_KEY`!
-4. To deploy to production:
+3. During setup, Vercel will prompt you to link your Environment Variables. Be sure to provide your `VITE_GROQ_API_KEY`!
+4. **Production Deploy**:
    ```bash
    vercel --prod
    ```
+
+---
+*Built by Kesava Sravan.*
