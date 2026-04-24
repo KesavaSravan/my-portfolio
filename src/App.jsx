@@ -181,7 +181,7 @@ function HomeContent() {
         <div className="education-list">
           <div className="education-item glass-panel" style={{ padding: '2rem' }}>
             <h4 style={{ fontSize: '1.3rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>B.Tech – Electrical and Computer Engineering</h4>
-            <p className="institution" style={{ color: '#06b6d4', fontWeight: '500', marginBottom: '0.5rem' }}>Amrita Vishwa Vidyapeetham, Bengaluru</p>
+            <p className="institution" style={{ color: '#06b6d4', fontWeight: '500', marginBottom: '0.5rem' }}>Amrita Vishwa Vidyapeetham, Coimbatore</p>
             <p className="duration" style={{ color: 'var(--text-secondary)' }}>2020 – 2024 | CGPA: 7.5 / 10</p>
           </div>
         </div>
