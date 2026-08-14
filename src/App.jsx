@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import ChatBot from "./ChatBot";
 import ProjectsPage from "./ProjectsPage";
 import { projectsData } from "./projectsData";
+import { Analytics } from "@vercel/analytics/react";
 import "./App.css";
 
 const fadeUpVariant = {
@@ -455,6 +456,9 @@ export default function Portfolio() {
           tourStep={tourStep}
         />
       )}
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
 
     </div>
   );
