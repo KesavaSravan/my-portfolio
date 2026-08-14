@@ -250,6 +250,48 @@
 .chatbot-send-btn:hover:not(:disabled) { transform: scale(1.1); }
 .chatbot-send-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
+/* Quick Replies Chips */
+.chatbot-quick-replies {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  overflow-x: auto;
+  border-top: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  flex-shrink: 0;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.chatbot-quick-replies::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+
+.chatbot-chip {
+  background: var(--bg-accent);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.chatbot-chip:hover:not(:disabled) {
+  background: var(--gradient-primary);
+  color: white;
+  border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.25);
+}
+
+.chatbot-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Mobile */
 @media (max-width: 480px) {
   .chatbot-window {

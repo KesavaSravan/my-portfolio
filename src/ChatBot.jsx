@@ -41,14 +41,53 @@ PROJECTS:
 - RoleReadyResume: Full-stack AI-powered resume tailoring app using React, Node.js, and Groq API
 - MCP Temperature Tool Server: MCP server in Python/FastAPI for async OpenWeatherMap operations
 - Deep Research MCP Server: Deep Research MCP server with source credibility ranking using Python, FastAPI, and JSON-RPC
+- AI Vector Space Visualization Platform: Interactive 3D visual workspace to analyze high-dimensional vector embeddings, clustering, and similarity relationships. Built using React Three Fiber, Three.js, WebGL, FastAPI, FAISS, and PCA/t-SNE/UMAP dimensionality reduction.
 
 EDUCATION:
 - B.Tech Electrical and Computer Engineering, Amrita Vishwa Vidyapeetham, 2024, CGPA: 7.5/10
 
 If asked anything unrelated to Kesava Sravan, politely say you can only answer questions about him.`;
 
-export default function ChatBot({ darkMode }) {
-  const [isOpen, setIsOpen] = useState(true);
+const QUICK_REPLIES = [
+  "Tell me about Sravan",
+  "What projects has he built?",
+  "What is his backend stack?",
+  "Are you open to new roles?",
+];
+
+const TOUR_STEPS_METADATA = [
+  {
+    id: "tour-header",
+    explanation: "Welcome to my portfolio! I've scrolled you to the top header. Here is Hariyapuraju Kesava Sravan, Systems Engineer at Publicis Sapient, located in Bengaluru, India.",
+    chips: ["Next: Summary ➡️", "Exit Tour ❌"]
+  },
+  {
+    id: "tour-summary",
+    explanation: "We are now at the Professional Summary. Sravan specializes in AI-enabled backend systems, Spring Boot microservices, and agentic workflows.",
+    chips: ["Back ⬅️", "Next: Skills ➡️", "Exit Tour ❌"]
+  },
+  {
+    id: "skills",
+    explanation: "This is the Technical Skills Bento Grid! It showcases Sravan's expertise grouped by Languages, Backend, Generative AI, Databases, and DevOps tools.",
+    chips: ["Back ⬅️", "Next: Projects ➡️", "Exit Tour ❌"]
+  },
+  {
+    id: "tour-projects",
+    explanation: "Here are the Featured Projects, including the new AI Vector Space Visualization Platform, RoleReadyResume, and several Model Context Protocol (MCP) servers.",
+    chips: ["Back ⬅️", "Next: Chatbot ➡️", "Exit Tour ❌"]
+  },
+  {
+    id: "tour-chatbot",
+    explanation: "And finally, we are back at the AI Chatbot! You can chat with me here anytime. Click 'Finish Tour' to wrap up, or ask me any question!",
+    chips: ["Back ⬅️", "Finish Tour 🎉"]
+  }
+];
+
+export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: setExternalIsOpen, onStartTour, tourStep, setTourStep }) {
+  const [internalIsOpen, setInternalIsOpen] = useState(true);
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const setIsOpen = setExternalIsOpen !== undefined ? setExternalIsOpen : setInternalIsOpen;
+
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -63,11 +102,57 @@ export default function ChatBot({ darkMode }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = async () => {
-    const trimmed = input.trim();
-    if (!trimmed || loading) return;
+  useEffect(() => {
+    if (tourStep === 0) {
+      setMessages([
+        {
+          role: "assistant",
+          content: TOUR_STEPS_METADATA[0].explanation,
+        }
+      ]);
+    }
+  }, [tourStep]);
 
-    const userMessage = { role: "user", content: trimmed };
+  const handleTourNavigation = (text) => {
+    if (loading) return;
+
+    // Add user message to history
+    const userMsg = { role: "user", content: text };
+    setMessages((prev) => [...prev, userMsg]);
+
+    let nextStep = tourStep;
+    let explanationText = "";
+
+    if (text.includes("Next")) {
+      nextStep = tourStep + 1;
+      explanationText = TOUR_STEPS_METADATA[nextStep].explanation;
+    } else if (text.includes("Back")) {
+      nextStep = tourStep - 1;
+      explanationText = TOUR_STEPS_METADATA[nextStep].explanation;
+    } else if (text.includes("Exit") || text.includes("Finish")) {
+      nextStep = -1;
+      explanationText = "Awesome! I hope you enjoyed the guided tour. Let me know if you have any questions about Sravan or his work! 👇";
+    }
+
+    setTourStep(nextStep);
+
+    // Add assistant response to history
+    setMessages((prev) => [...prev, { role: "assistant", content: explanationText }]);
+
+    // Scroll to section
+    if (nextStep !== -1) {
+      setTimeout(() => {
+        const el = document.getElementById(TOUR_STEPS_METADATA[nextStep].id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
+    }
+  };
+
+  const sendMessage = async (customText) => {
+    const textToSend = typeof customText === "string" ? customText.trim() : input.trim();
+    if (!textToSend || loading) return;
+
+    const userMessage = { role: "user", content: textToSend };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
@@ -110,6 +195,9 @@ export default function ChatBot({ darkMode }) {
     }
   };
 
+  const currentTourMetadata = tourStep !== -1 ? TOUR_STEPS_METADATA[tourStep] : null;
+  const activeChips = currentTourMetadata ? currentTourMetadata.chips : QUICK_REPLIES;
+
   return (
     <>
       {/* Floating Button */}
@@ -123,7 +211,7 @@ export default function ChatBot({ darkMode }) {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className={`chatbot-window ${darkMode ? "chatbot-dark" : "chatbot-light"}`}>
+        <div className={`chatbot-window ${darkMode ? "chatbot-dark" : "chatbot-light"} ${tourStep === 4 ? "tour-highlighted" : ""}`} id="tour-chatbot">
           {/* Header */}
           <div className="chatbot-header">
             <div className="chatbot-header-info">
@@ -159,6 +247,26 @@ export default function ChatBot({ darkMode }) {
               </div>
             )}
             <div ref={messagesEndRef} />
+          </div>
+
+          {/* Quick Replies */}
+          <div className="chatbot-quick-replies">
+            {activeChips.map((reply, i) => (
+              <button 
+                key={i} 
+                className="chatbot-chip" 
+                onClick={() => {
+                  if (tourStep !== -1) {
+                    handleTourNavigation(reply);
+                  } else {
+                    sendMessage(reply);
+                  }
+                }}
+                disabled={loading}
+              >
+                {reply}
+              </button>
+            ))}
           </div>
 
           {/* Input */}

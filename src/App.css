@@ -731,3 +731,57 @@ html {
   box-shadow: var(--shadow-heavy);
   border-color: rgba(255, 255, 255, 0.15);
 }
+
+/* Agentic Tour System */
+.tour-trigger-fab {
+  position: fixed;
+  bottom: 6.5rem;
+  right: 2rem;
+  z-index: 9997;
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
+  border: none;
+  background: var(--gradient-secondary);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tour-trigger-fab:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+}
+
+
+/* Pulsing Tour Highlight Glow */
+.tour-highlighted {
+  outline: 3px solid #06b6d4;
+  outline-offset: 4px;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.5) !important;
+  animation: tourPulse 2s infinite ease-in-out;
+  transition: all 0.3s ease;
+}
+
+.portfolio-header.tour-highlighted {
+  outline-offset: -4px;
+}
+
+@keyframes tourPulse {
+  0% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); outline-color: rgba(6, 182, 212, 0.7); }
+  50% { box-shadow: 0 0 30px rgba(6, 182, 212, 0.8); outline-color: rgba(6, 182, 212, 1); }
+  100% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); outline-color: rgba(6, 182, 212, 0.7); }
+}
+
+@media (max-width: 480px) {
+  .tour-trigger-fab {
+    right: 1rem;
+    bottom: 5.5rem;
+  }
+}

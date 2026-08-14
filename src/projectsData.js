@@ -33,5 +33,12 @@ export const projectsData = [
     description: "A production-quality Deep Research MCP Server with Source Credibility Ranking. Implements a JSON-RPC 2.0 API over FastAPI to provide web search, multi-source reading, and text summarization capabilities. Built with Python to deliver ranked, credible research using advanced LLM integration.",
     technologies: "Python, FastAPI, MCP, JSON-RPC, Uvicorn",
     link: "https://github.com/KesavaSravan/deepsearch-mcp"
+  },
+  {
+    id: 6,
+    title: "AI Vector Space Visualization Platform",
+    description: "An interactive 3D platform that projects high-dimensional embedding vectors into a visual workspace to analyze clustering, similarity, and relationships. Built with React Three Fiber, Three.js, and WebGL custom shaders leveraging instanced rendering for 100,000+ vectors. Supports PCA, t-SNE, UMAP, K-Means/DBSCAN clustering, and FAISS-based nearest-neighbor similarity search.",
+    technologies: "React, React Three Fiber, Three.js, WebGL, FastAPI, Python, FAISS, UMAP, t-SNE, PCA",
+    link: "https://github.com/KesavaSravan/vector-space-platform"
   }
 ];

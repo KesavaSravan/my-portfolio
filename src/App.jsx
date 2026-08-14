@@ -1,6 +1,6 @@
 import { Github, Linkedin, Mail, Phone, Sun, Moon, Download, MapPin, Calendar, ArrowRight, Home, Code, Briefcase } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ChatBot from "./ChatBot";
 import ProjectsPage from "./ProjectsPage";
@@ -12,15 +12,16 @@ const fadeUpVariant = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-function HomeContent() {
+function HomeContent({ tourStep }) {
   return (
     <main className="main-content">
       {/* Summary */}
-      <motion.section 
-        className="content-section" 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true, margin: "-50px" }} 
+      <motion.section
+        className={`content-section ${tourStep === 1 ? "tour-highlighted" : ""}`}
+        id="tour-summary"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
         variants={fadeUpVariant}
       >
         <h2 className="section-title">Professional Summary</h2>
@@ -32,19 +33,19 @@ function HomeContent() {
       </motion.section>
 
       {/* Experience */}
-      <motion.section 
-        className="content-section" 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true, margin: "-50px" }} 
+      <motion.section
+        className="content-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
         variants={fadeUpVariant}
       >
         <h2 className="section-title">Professional Experience</h2>
         <div className="experience-item glass-panel">
           <div className="experience-header">
             <h3 className="position-title">Systems Engineer</h3>
-            <span className="company-name" style={{color: '#667eea', fontWeight: '600'}}>Publicis Sapient, Bengaluru</span>
-            <span className="duration" style={{marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)'}}><Calendar size={16} /> Feb 2025 – Present</span>
+            <span className="company-name" style={{ color: '#667eea', fontWeight: '600' }}>Publicis Sapient, Bengaluru</span>
+            <span className="duration" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)' }}><Calendar size={16} /> Feb 2025 – Present</span>
           </div>
           <ul className="experience-list">
             <li>Designed and developed scalable microservices using Java and Spring Boot to support enterprise and AI-enabled workflows.</li>
@@ -59,18 +60,18 @@ function HomeContent() {
       </motion.section>
 
       {/* Technical Skills (Bento Grid) */}
-      <motion.section 
+      <motion.section
         id="skills"
-        className="content-section" 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true, margin: "-50px" }} 
+        className={`content-section ${tourStep === 2 ? "tour-highlighted" : ""}`}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
         variants={fadeUpVariant}
       >
         <h2 className="section-title">Technical Skills</h2>
         <div className="bento-grid">
           <div className="bento-item medium">
-            <h4 style={{marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600'}}>Languages</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Languages</h4>
             <div className="skill-tags">
               <span className="skill-tag">Java</span>
               <span className="skill-tag">Python</span>
@@ -79,7 +80,7 @@ function HomeContent() {
             </div>
           </div>
           <div className="bento-item medium">
-            <h4 style={{marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600'}}>Backend & APIs</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Backend & APIs</h4>
             <div className="skill-tags">
               <span className="skill-tag">Spring Boot</span>
               <span className="skill-tag">Spring Security</span>
@@ -90,7 +91,7 @@ function HomeContent() {
             </div>
           </div>
           <div className="bento-item large">
-            <h4 style={{marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600'}}>AI & Generative AI</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>AI & Generative AI</h4>
             <div className="skill-tags">
               <span className="skill-tag">LLMs</span>
               <span className="skill-tag">RAG</span>
@@ -101,7 +102,7 @@ function HomeContent() {
             </div>
           </div>
           <div className="bento-item small">
-            <h4 style={{marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600'}}>Databases</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Databases</h4>
             <div className="skill-tags">
               <span className="skill-tag">PostgreSQL</span>
               <span className="skill-tag">MySQL</span>
@@ -109,7 +110,7 @@ function HomeContent() {
             </div>
           </div>
           <div className="bento-item large">
-            <h4 style={{marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600'}}>Tools & DevOps</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Tools & DevOps</h4>
             <div className="skill-tags">
               <span className="skill-tag">Git</span>
               <span className="skill-tag">Docker</span>
@@ -121,7 +122,7 @@ function HomeContent() {
             </div>
           </div>
           <div className="bento-item small">
-            <h4 style={{marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600'}}>Automation</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Automation</h4>
             <div className="skill-tags">
               <span className="skill-tag">Power Automate</span>
               <span className="skill-tag">Copilot</span>
@@ -131,11 +132,12 @@ function HomeContent() {
       </motion.section>
 
       {/* Projects */}
-      <motion.section 
-        className="content-section" 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true, margin: "-50px" }} 
+      <motion.section
+        className={`content-section ${tourStep === 3 ? "tour-highlighted" : ""}`}
+        id="tour-projects"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
         variants={fadeUpVariant}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -170,11 +172,11 @@ function HomeContent() {
       </motion.section>
 
       {/* Education */}
-      <motion.section 
-        className="content-section" 
-        initial="hidden" 
-        whileInView="visible" 
-        viewport={{ once: true, margin: "-50px" }} 
+      <motion.section
+        className="content-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
         variants={fadeUpVariant}
       >
         <h2 className="section-title">Education</h2>
@@ -188,7 +190,7 @@ function HomeContent() {
       </motion.section>
 
       {/* Download Resume */}
-      <motion.section 
+      <motion.section
         className="download-section"
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -204,9 +206,40 @@ function HomeContent() {
   );
 }
 
+const TOUR_STEPS = [
+  {
+    id: "tour-header",
+    title: "Welcome to Sravan's Portfolio 👋",
+    content: "Let's take a quick interactive tour to show you around. This is the main header introducing Sravan, Systems Engineer at Publicis Sapient.",
+  },
+  {
+    id: "tour-summary",
+    title: "Professional Summary 📝",
+    content: "Here is a brief summary of Sravan's experience building scalable microservices and agentic AI systems.",
+  },
+  {
+    id: "skills",
+    title: "Technical Skills 🛠️",
+    content: "Sravan's technical capabilities in Java, Spring Boot, Python, Generative AI/RAG, and DevOps are organized here.",
+  },
+  {
+    id: "tour-projects",
+    title: "Featured Projects 🚀",
+    content: "Here are some featured projects, including the new AI Vector Space Visualization Platform! Click 'Show More' to see all projects.",
+  },
+  {
+    id: "tour-chatbot",
+    title: "AI Chat Assistant 💬",
+    content: "You can ask Sravan's AI assistant questions directly here at any time. It's powered by Llama 3.3 and Groq!",
+  }
+];
+
 export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(true);
+  const [isChatOpen, setIsChatOpen] = useState(true);
+  const [tourStep, setTourStep] = useState(-1);
   const location = useLocation();
+  const navigate = useNavigate();
   const dragAreaRef = useRef(null);
 
   useEffect(() => {
@@ -221,6 +254,18 @@ export default function Portfolio() {
       window.scrollTo(0, 0);
     }
   }, [location.pathname, location.hash]);
+
+  const handleStartTour = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+    setTourStep(0);
+    setIsChatOpen(true);
+    setTimeout(() => {
+      const el = document.getElementById(TOUR_STEPS[0].id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  };
 
   const handleScrollToTop = (e) => {
     if (location.pathname === "/") {
@@ -251,7 +296,7 @@ export default function Portfolio() {
 
       {/* Floating Navbar */}
       <div className="floating-nav-wrapper" ref={dragAreaRef}>
-        <motion.nav 
+        <motion.nav
           className="floating-nav"
           drag="y"
           dragConstraints={dragAreaRef}
@@ -283,9 +328,9 @@ export default function Portfolio() {
         <Route path="/" element={
           <>
             {/* Header */}
-            <header className="portfolio-header">
+            <header className={`portfolio-header ${tourStep === 0 ? "tour-highlighted" : ""}`} id="tour-header">
               <div className="header-overlay"></div>
-              <motion.div 
+              <motion.div
                 className="header-content"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -302,7 +347,7 @@ export default function Portfolio() {
 
             {/* Contact */}
             <section className="contact-section">
-              <motion.div 
+              <motion.div
                 className="contact-grid"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -324,7 +369,7 @@ export default function Portfolio() {
               </motion.div>
             </section>
 
-            <HomeContent />
+            <HomeContent tourStep={tourStep} />
           </>
         } />
         <Route path="/projects" element={
@@ -336,8 +381,22 @@ export default function Portfolio() {
         <p style={{ fontFamily: 'Outfit, sans-serif' }}>© 2026 Hariyapuraju Kesava Sravan — Portfolio built with React & Framer Motion</p>
       </footer>
 
+      {/* Agentic Tour Mode Floating Trigger Pill */}
+      {tourStep === -1 && !isChatOpen && (
+        <button className="tour-trigger-fab" onClick={handleStartTour}>
+          <span>Agentic Tour Mode</span>
+        </button>
+      )}
+
       {/* AI Chatbot */}
-      <ChatBot darkMode={darkMode} />
+      <ChatBot
+        darkMode={darkMode}
+        isOpen={isChatOpen}
+        setIsOpen={setIsChatOpen}
+        onStartTour={handleStartTour}
+        tourStep={tourStep}
+        setTourStep={setTourStep}
+      />
 
     </div>
   );
