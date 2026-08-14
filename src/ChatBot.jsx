@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MessageCircle, X, Send, Bot, User } from "lucide-react";
 import "./ChatBot.css";
 
 const SYSTEM_PROMPT = `You are a helpful and concise AI assistant for Kesava Sravan's portfolio website. 
 Your goal is to provide clear, easy-to-read answers about him based on the provided information.
+
+You have access to tools that let you navigate and interact with the website on behalf of the user. Whenever a user asks to see a section, view projects, change the theme, or download his resume, you MUST call the appropriate tool to execute their request.
 
 CRITICAL FORMATTING RULES:
 1. DO NOT use markdown formatting like **bold**, *italics*, or # headers (the chat does not render markdown, so asterisks will look broken).
@@ -48,6 +51,67 @@ EDUCATION:
 
 If asked anything unrelated to Kesava Sravan, politely say you can only answer questions about him.`;
 
+const BOT_TOOLS = [
+  {
+    type: "function",
+    function: {
+      name: "scroll_to_section",
+      description: "Scroll the webpage to a specific section on the home page. Use this when the user asks to see, view, or look at a specific section of the profile/home page.",
+      parameters: {
+        type: "object",
+        properties: {
+          section: {
+            type: "string",
+            enum: ["header", "summary", "skills", "projects", "contact"],
+            description: "The target section ID to scroll to."
+          }
+        },
+        required: ["section"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "navigate_to_page",
+      description: "Navigate to a different page of the website (e.g., Home page '/' or Full Projects page '/projects'). Use this when the user asks to go to the projects page or home page.",
+      parameters: {
+        type: "object",
+        properties: {
+          path: {
+            type: "string",
+            enum: ["/", "/projects"],
+            description: "The path to navigate to."
+          }
+        },
+        required: ["path"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "toggle_theme",
+      description: "Toggle the website's theme between dark mode and light mode. Use this when the user asks to change the theme, switch to dark/light mode, etc.",
+      parameters: {
+        type: "object",
+        properties: {}
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "download_resume",
+      description: "Trigger the download of Kesava Sravan's PDF resume. Use this when the user asks to download, fetch, or get his resume.",
+      parameters: {
+        type: "object",
+        properties: {}
+      }
+    }
+  }
+];
+
 const QUICK_REPLIES = [
   "Tell me about Sravan",
   "What projects has he built?",
@@ -55,38 +119,13 @@ const QUICK_REPLIES = [
   "Are you open to new roles?",
 ];
 
-const TOUR_STEPS_METADATA = [
-  {
-    id: "tour-header",
-    explanation: "Welcome to my portfolio! I've scrolled you to the top header. Here is Hariyapuraju Kesava Sravan, Systems Engineer at Publicis Sapient, located in Bengaluru, India.",
-    chips: ["Next: Summary ➡️", "Exit Tour ❌"]
-  },
-  {
-    id: "tour-summary",
-    explanation: "We are now at the Professional Summary. Sravan specializes in AI-enabled backend systems, Spring Boot microservices, and agentic workflows.",
-    chips: ["Back ⬅️", "Next: Skills ➡️", "Exit Tour ❌"]
-  },
-  {
-    id: "skills",
-    explanation: "This is the Technical Skills Bento Grid! It showcases Sravan's expertise grouped by Languages, Backend, Generative AI, Databases, and DevOps tools.",
-    chips: ["Back ⬅️", "Next: Projects ➡️", "Exit Tour ❌"]
-  },
-  {
-    id: "tour-projects",
-    explanation: "Here are the Featured Projects, including the new AI Vector Space Visualization Platform, RoleReadyResume, and several Model Context Protocol (MCP) servers.",
-    chips: ["Back ⬅️", "Next: Chatbot ➡️", "Exit Tour ❌"]
-  },
-  {
-    id: "tour-chatbot",
-    explanation: "And finally, we are back at the AI Chatbot! You can chat with me here anytime. Click 'Finish Tour' to wrap up, or ask me any question!",
-    chips: ["Back ⬅️", "Finish Tour 🎉"]
-  }
-];
-
-export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: setExternalIsOpen, onStartTour, tourStep, setTourStep }) {
+export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen, setIsOpen: setExternalIsOpen, tourStep = -1 }) {
   const [internalIsOpen, setInternalIsOpen] = useState(true);
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const setIsOpen = setExternalIsOpen !== undefined ? setExternalIsOpen : setInternalIsOpen;
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [messages, setMessages] = useState([
     {
@@ -102,50 +141,68 @@ export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: s
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(() => {
-    if (tourStep === 0) {
-      setMessages([
-        {
-          role: "assistant",
-          content: TOUR_STEPS_METADATA[0].explanation,
-        }
-      ]);
-    }
-  }, [tourStep]);
+  const handleScrollToSection = (section) => {
+    const sectionMap = {
+      header: "tour-header",
+      summary: "tour-summary",
+      skills: "skills",
+      projects: "tour-projects",
+      contact: "contact-section"
+    };
 
-  const handleTourNavigation = (text) => {
-    if (loading) return;
+    const id = sectionMap[section];
+    if (!id) return `Unknown section: ${section}`;
 
-    // Add user message to history
-    const userMsg = { role: "user", content: text };
-    setMessages((prev) => [...prev, userMsg]);
-
-    let nextStep = tourStep;
-    let explanationText = "";
-
-    if (text.includes("Next")) {
-      nextStep = tourStep + 1;
-      explanationText = TOUR_STEPS_METADATA[nextStep].explanation;
-    } else if (text.includes("Back")) {
-      nextStep = tourStep - 1;
-      explanationText = TOUR_STEPS_METADATA[nextStep].explanation;
-    } else if (text.includes("Exit") || text.includes("Finish")) {
-      nextStep = -1;
-      explanationText = "Awesome! I hope you enjoyed the guided tour. Let me know if you have any questions about Sravan or his work! 👇";
-    }
-
-    setTourStep(nextStep);
-
-    // Add assistant response to history
-    setMessages((prev) => [...prev, { role: "assistant", content: explanationText }]);
-
-    // Scroll to section
-    if (nextStep !== -1) {
+    if (location.pathname !== "/") {
+      navigate("/");
       setTimeout(() => {
-        const el = document.getElementById(TOUR_STEPS_METADATA[nextStep].id);
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 100);
+        let el = document.getElementById(id);
+        if (!el && section === "contact") {
+          el = document.querySelector(".contact-section");
+        }
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+      return `Navigated to home page and scrolling to ${section} section.`;
+    } else {
+      let el = document.getElementById(id);
+      if (!el && section === "contact") {
+        el = document.querySelector(".contact-section");
+      }
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        return `Successfully scrolled to the ${section} section.`;
+      } else {
+        return `Could not find section ${section} on page.`;
+      }
     }
+  };
+
+  const handleNavigateToPage = (path) => {
+    if (location.pathname !== path) {
+      navigate(path);
+      return `Successfully navigated to page ${path}.`;
+    }
+    return `Already on page ${path}.`;
+  };
+
+  const handleToggleTheme = () => {
+    if (setDarkMode) {
+      setDarkMode(prev => !prev);
+      return "Successfully toggled website theme.";
+    }
+    return "Failed to toggle theme: setDarkMode function not provided.";
+  };
+
+  const handleDownloadResume = () => {
+    const link = document.createElement("a");
+    link.href = `${import.meta.env.BASE_URL}Kesava Sravan Hariyapuraju Resume.pdf`;
+    link.download = "Kesava Sravan Hariyapuraju Resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    return "Successfully triggered resume PDF download.";
   };
 
   const sendMessage = async (customText) => {
@@ -158,6 +215,11 @@ export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: s
     setLoading(true);
 
     try {
+      const conversationHistory = [
+        ...messages,
+        userMessage
+      ];
+
       const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -169,15 +231,112 @@ export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: s
           max_tokens: 512,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
-            ...messages,
-            userMessage,
+            ...conversationHistory.map(m => {
+              const sanitized = { role: m.role, content: m.content || "" };
+              if (m.tool_calls) sanitized.tool_calls = m.tool_calls;
+              if (m.tool_call_id) sanitized.tool_call_id = m.tool_call_id;
+              if (m.name) sanitized.name = m.name;
+              return sanitized;
+            }),
           ],
+          tools: BOT_TOOLS,
+          tool_choice: "auto"
         }),
       });
 
       const data = await response.json();
-      const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't get a response. Please try again.";
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      const assistantMessage = data.choices?.[0]?.message;
+      if (!assistantMessage) {
+        throw new Error("Invalid response from API");
+      }
+
+      const toolCalls = assistantMessage.tool_calls;
+
+      if (toolCalls && toolCalls.length > 0) {
+        const assistantToolMsg = {
+          role: "assistant",
+          content: assistantMessage.content || "",
+          tool_calls: toolCalls
+        };
+        
+        const toolResponses = [];
+        for (const toolCall of toolCalls) {
+          const name = toolCall.function.name;
+          const argsString = toolCall.function.arguments;
+          let args = {};
+          try {
+            args = JSON.parse(argsString);
+          } catch (e) {
+            console.error("Failed to parse tool call arguments", e);
+          }
+          
+          let resultText = "";
+          try {
+            if (name === "scroll_to_section") {
+              resultText = handleScrollToSection(args.section);
+            } else if (name === "navigate_to_page") {
+              resultText = handleNavigateToPage(args.path);
+            } else if (name === "toggle_theme") {
+              resultText = handleToggleTheme();
+            } else if (name === "download_resume") {
+              resultText = handleDownloadResume();
+            } else {
+              resultText = `Unknown function: ${name}`;
+            }
+          } catch (err) {
+            resultText = `Error executing tool ${name}: ${err.message}`;
+          }
+
+          toolResponses.push({
+            role: "tool",
+            tool_call_id: toolCall.id,
+            name: name,
+            content: resultText
+          });
+        }
+
+        setMessages((prev) => [...prev, assistantToolMsg, ...toolResponses]);
+
+        const secondResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "llama-3.3-70b-versatile",
+            max_tokens: 512,
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              ...conversationHistory.map(m => {
+                const sanitized = { role: m.role, content: m.content || "" };
+                if (m.tool_calls) sanitized.tool_calls = m.tool_calls;
+                if (m.tool_call_id) sanitized.tool_call_id = m.tool_call_id;
+                if (m.name) sanitized.name = m.name;
+                return sanitized;
+              }),
+              {
+                role: "assistant",
+                content: assistantMessage.content || "",
+                tool_calls: toolCalls
+              },
+              ...toolResponses.map(tr => ({
+                role: "tool",
+                tool_call_id: tr.tool_call_id,
+                name: tr.name,
+                content: tr.content
+              }))
+            ]
+          })
+        });
+
+        const secondData = await secondResponse.json();
+        const finalReply = secondData.choices?.[0]?.message?.content || "Action completed.";
+        setMessages((prev) => [...prev, { role: "assistant", content: finalReply }]);
+      } else {
+        const reply = assistantMessage.content || "Sorry, I couldn't generate a response.";
+        setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      }
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -195,8 +354,7 @@ export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: s
     }
   };
 
-  const currentTourMetadata = tourStep !== -1 ? TOUR_STEPS_METADATA[tourStep] : null;
-  const activeChips = currentTourMetadata ? currentTourMetadata.chips : QUICK_REPLIES;
+  const activeChips = QUICK_REPLIES;
 
   return (
     <>
@@ -230,7 +388,7 @@ export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: s
 
           {/* Messages */}
           <div className="chatbot-messages">
-            {messages.map((msg, i) => (
+            {messages.filter(msg => msg.content && (msg.role === "user" || msg.role === "assistant")).map((msg, i) => (
               <div key={i} className={`chatbot-message chatbot-message--${msg.role}`}>
                 <div className="chatbot-message-icon">
                   {msg.role === "assistant" ? <Bot size={14} /> : <User size={14} />}
@@ -255,13 +413,7 @@ export default function ChatBot({ darkMode, isOpen: externalIsOpen, setIsOpen: s
               <button 
                 key={i} 
                 className="chatbot-chip" 
-                onClick={() => {
-                  if (tourStep !== -1) {
-                    handleTourNavigation(reply);
-                  } else {
-                    sendMessage(reply);
-                  }
-                }}
+                onClick={() => sendMessage(reply)}
                 disabled={loading}
               >
                 {reply}

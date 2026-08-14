@@ -260,7 +260,7 @@ export default function Portfolio() {
       navigate("/");
     }
     setTourStep(0);
-    setIsChatOpen(true);
+    setIsChatOpen(false);
     setTimeout(() => {
       const el = document.getElementById(TOUR_STEPS[0].id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -381,22 +381,73 @@ export default function Portfolio() {
         <p style={{ fontFamily: 'Outfit, sans-serif' }}>© 2026 Hariyapuraju Kesava Sravan — Portfolio built with React & Framer Motion</p>
       </footer>
 
-      {/* Agentic Tour Mode Floating Trigger Pill */}
+      {/* Tour Mode Floating Trigger Pill */}
       {tourStep === -1 && !isChatOpen && (
         <button className="tour-trigger-fab" onClick={handleStartTour}>
-          <span>Agentic Tour Mode</span>
+          <span>Tour Mode</span>
         </button>
       )}
 
+      {/* Standalone Tour Overlay Card */}
+      {tourStep !== -1 && (
+        <div className="standalone-tour-card glass-panel">
+          <div className="tour-card-header">
+            <h3>{TOUR_STEPS[tourStep].title}</h3>
+            <span className="tour-card-progress">{tourStep + 1} / {TOUR_STEPS.length}</span>
+          </div>
+          <p className="tour-card-content">{TOUR_STEPS[tourStep].content}</p>
+          <div className="tour-card-actions">
+            {tourStep > 0 && (
+              <button 
+                className="tour-card-btn tour-card-btn-secondary" 
+                onClick={() => {
+                  const prevStep = tourStep - 1;
+                  setTourStep(prevStep);
+                  const el = document.getElementById(TOUR_STEPS[prevStep].id);
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+              >
+                Back
+              </button>
+            )}
+            <button 
+              className="tour-card-btn tour-card-btn-danger" 
+              onClick={() => {
+                if (tourStep === TOUR_STEPS.length - 1) {
+                  setIsChatOpen(true);
+                }
+                setTourStep(-1);
+              }}
+            >
+              {tourStep === TOUR_STEPS.length - 1 ? "Finish" : "Skip"}
+            </button>
+            {tourStep < TOUR_STEPS.length - 1 && (
+              <button 
+                className="tour-card-btn tour-card-btn-primary" 
+                onClick={() => {
+                  const nextStep = tourStep + 1;
+                  setTourStep(nextStep);
+                  const el = document.getElementById(TOUR_STEPS[nextStep].id);
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+              >
+                Next
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* AI Chatbot */}
-      <ChatBot
-        darkMode={darkMode}
-        isOpen={isChatOpen}
-        setIsOpen={setIsChatOpen}
-        onStartTour={handleStartTour}
-        tourStep={tourStep}
-        setTourStep={setTourStep}
-      />
+      {(tourStep === -1 || tourStep === 4) && (
+        <ChatBot
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+          isOpen={tourStep === 4 ? true : isChatOpen}
+          setIsOpen={setIsChatOpen}
+          tourStep={tourStep}
+        />
+      )}
 
     </div>
   );

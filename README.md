@@ -9,7 +9,7 @@ A highly polished, professional portfolio web application built with React, Vite
 - **Fluid Animations**: Scroll-linked fade and stagger animations powered by `framer-motion` ensure elements organically cascade into view.
 - **AI Chatbot Assistant**: Embedded conversational AI powered by Groq (`llama-3.3-70b-versatile`) acts as a personal agent, immediately answering recruiter questions about experience and skills.
 - **Interactive Quick-Reply Chips**: Suggested query chips enable users to quickly ask about Sravan's stack, roles, or background with a single click.
-- **Agentic Tour Mode**: Guided website walkthrough hosted directly by the AI chatbot. The chatbot scrolls the page, highlights elements with pulsing cyan outlines, and dynamically updates its navigation chips step-by-step.
+- **Tour Mode**: Standalone guided website walkthrough. It scrolls the page and highlights elements step-by-step via an onboarding card.
 - **Dynamic Theming**: An intuitive structural toggle between deep OLED Dark mode and translucent Light mode.
 
 ## 🛠 Tech Stack
