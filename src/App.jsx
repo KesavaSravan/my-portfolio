@@ -292,7 +292,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className={`portfolio-container ${darkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className={`portfolio-container ${darkMode ? 'dark-theme' : 'light-theme'} ${tourStep !== -1 ? `tour-active tour-step-${tourStep}` : ""}`}>
 
       {/* Floating Navbar */}
       <div className="floating-nav-wrapper" ref={dragAreaRef}>

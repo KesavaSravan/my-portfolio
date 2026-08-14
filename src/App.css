@@ -898,8 +898,23 @@ html {
   background: rgba(239, 68, 68, 0.25);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .standalone-tour-card {
-    bottom: 1rem;
+    width: 90% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 1.5rem !important;
+  }
+
+  /* Hide the chatbot FAB and window during early steps (0-3) on mobile/tablet to avoid layout overlap */
+  .tour-active:not(.tour-step-4) .chatbot-fab,
+  .tour-active:not(.tour-step-4) .chatbot-window {
+    display: none !important;
+  }
+
+  /* Shift the tour card to the top on the final step (Step 4) on mobile/tablet so it doesn't cover the chatbot window */
+  .tour-step-4 .standalone-tour-card {
+    bottom: auto !important;
+    top: 5.5rem !important;
   }
 }
