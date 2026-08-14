@@ -205,6 +205,23 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
     return "Successfully triggered resume PDF download.";
   };
 
+  const sanitizeMessages = (msgs) => {
+    return msgs.map(m => {
+      const sanitized = { role: m.role };
+      if (m.role === "assistant" && m.tool_calls) {
+        sanitized.content = m.content || null;
+        sanitized.tool_calls = m.tool_calls;
+      } else if (m.role === "tool") {
+        sanitized.content = m.content || "";
+        sanitized.tool_call_id = m.tool_call_id;
+        sanitized.name = m.name;
+      } else {
+        sanitized.content = m.content || "";
+      }
+      return sanitized;
+    });
+  };
+
   const sendMessage = async (customText) => {
     const textToSend = typeof customText === "string" ? customText.trim() : input.trim();
     if (!textToSend || loading) return;
@@ -231,18 +248,18 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
           max_tokens: 512,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
-            ...conversationHistory.map(m => {
-              const sanitized = { role: m.role, content: m.content || "" };
-              if (m.tool_calls) sanitized.tool_calls = m.tool_calls;
-              if (m.tool_call_id) sanitized.tool_call_id = m.tool_call_id;
-              if (m.name) sanitized.name = m.name;
-              return sanitized;
-            }),
+            ...sanitizeMessages(conversationHistory),
           ],
           tools: BOT_TOOLS,
           tool_choice: "auto"
         }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error?.message || `HTTP ${response.status} Error`;
+        throw new Error(errorMessage);
+      }
 
       const data = await response.json();
       const assistantMessage = data.choices?.[0]?.message;
@@ -308,16 +325,10 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
             max_tokens: 512,
             messages: [
               { role: "system", content: SYSTEM_PROMPT },
-              ...conversationHistory.map(m => {
-                const sanitized = { role: m.role, content: m.content || "" };
-                if (m.tool_calls) sanitized.tool_calls = m.tool_calls;
-                if (m.tool_call_id) sanitized.tool_call_id = m.tool_call_id;
-                if (m.name) sanitized.name = m.name;
-                return sanitized;
-              }),
+              ...sanitizeMessages(conversationHistory),
               {
                 role: "assistant",
-                content: assistantMessage.content || "",
+                content: assistantMessage.content || null,
                 tool_calls: toolCalls
               },
               ...toolResponses.map(tr => ({
@@ -326,9 +337,16 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
                 name: tr.name,
                 content: tr.content
               }))
-            ]
+            ],
+            tools: BOT_TOOLS
           })
         });
+
+        if (!secondResponse.ok) {
+          const errorData = await secondResponse.json().catch(() => ({}));
+          const errorMessage = errorData.error?.message || `HTTP ${secondResponse.status} Error`;
+          throw new Error(errorMessage);
+        }
 
         const secondData = await secondResponse.json();
         const finalReply = secondData.choices?.[0]?.message?.content || "Action completed.";
@@ -337,10 +355,11 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
         const reply = assistantMessage.content || "Sorry, I couldn't generate a response.";
         setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
       }
-    } catch {
+    } catch (err) {
+      console.error("ChatBot error:", err);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Something went wrong. Please check your connection and try again." },
+        { role: "assistant", content: `Something went wrong: ${err.message}` },
       ]);
     } finally {
       setLoading(false);
