@@ -19,32 +19,32 @@ LOCATION: Bengaluru, Karnataka, India
 EMAIL: kesavasravan467@gmail.com
 PHONE: +91-93984 95822
 
-CURRENT ROLE: Systems Engineer at Publicis Sapient (Feb 2025 – Present)
+CURRENT ROLE: System Engineer at Publicis Sapient (Feb 2025 – Present)
+
+SUMMARY:
+Applied AI Specialist with hands-on experience architecting, scaling, and deploying production AI systems and Agentic workflows. Skilled in bridging enterprise customer requirements with robust AI architecture, leveraging LLMs (GPT, Claude, Gemini), Model Context Protocol (MCP), LangGraph, and RAG pipelines powered by FastAPI and cloud containerization. Proven track record of end-to-end technical ownership, enterprise API integrations, vector databases, and production monitoring for high-reliability AI applications.
 
 EXPERIENCE:
-- Designed scalable microservices using Java and Spring Boot for enterprise and AI-enabled workflows
-- Built secure REST APIs with JWT authentication and role-based access control
-- Developed backend services for AI-driven workflows and system integrations
-- Database optimization in PostgreSQL and MySQL
-- CI/CD pipelines using Jenkins and Docker
-- Monitoring with Prometheus and Grafana
-- Unit and integration tests using JUnit and Mockito
+- Architected and deployed production AI agent workflows using Agentic Studio and Model Context Protocol (MCP) servers, automating complex operational workloads
+- Engineered high-performance semantic search pipelines utilizing multi-provider vector embeddings and FAISS vector databases, cutting retrieval latency by 40%
+- Streamlined containerized microservices deployment with Docker, Docker Compose, and Jenkins CI/CD pipelines, driving 99.9% deployment reliability
+- Implemented production monitoring and observability infrastructure using Prometheus and Grafana to track LLM token metrics, API latencies, and agent health
+- Partnered directly with enterprise stakeholders in a technical consulting capacity to translate business constraints into scalable AI architectures
 
 SKILLS:
-- Languages: Java, Python, C, SQL
-- Backend: Spring Boot, Spring Security, Spring Data JPA, REST APIs, Microservices, JWT
-- AI/GenAI: LLMs, RAG, LangChain, NLP, Hugging Face Transformers, Agentic AI
-- Databases: PostgreSQL, MySQL, FAISS, Vector Databases
-- Tools: Git, Docker, Jenkins, Maven, Prometheus, Grafana, Linux
-- Platforms: Microsoft Power Automate, Microsoft Copilot Studio
+- AI Engineering: LLMs (GPT-4, Claude, Gemini), Agentic AI, Model Context Protocol (MCP), RAG, LangChain, LangGraph, Prompt Engineering, Semantic Search, FAISS, Hugging Face, Sentence Transformers, NLP, scikit-learn
+- Languages: Python, Java, SQL, C
+- Backend & APIs: FastAPI, Spring Boot, REST APIs, Microservices, JWT, RBAC, Node.js
+- Cloud & DevOps: Docker, Docker Compose, Kubernetes, Jenkins, GitHub Actions, CI/CD, AWS, Azure, GCP, Linux
+- Databases: PostgreSQL, MySQL, Vector Databases (FAISS)
+- Observability & Monitoring: Prometheus, Grafana
 
 PROJECTS:
-- AI-Powered Role-Based LMS: Microservices LMS with RAG-based AI assistant, agentic workflows, LLM orchestration, vector databases
-- Distributed Network Diagnostics Platform: Microservices for ping/traceroute/DNS, Spring Boot + Node.js, JWT, Docker, Prometheus
-- RoleReadyResume: Full-stack AI-powered resume tailoring app using React, Node.js, and Groq API
-- MCP Temperature Tool Server: MCP server in Python/FastAPI for async OpenWeatherMap operations
-- Deep Research MCP Server: Deep Research MCP server with source credibility ranking using Python, FastAPI, and JSON-RPC
-- AI Vector Space Visualization Platform: Interactive 3D visual workspace to analyze high-dimensional vector embeddings, clustering, and similarity relationships. Built using React Three Fiber, Three.js, WebGL, FastAPI, FAISS, and PCA/t-SNE/UMAP dimensionality reduction.
+- AI Vector Space Visualization Platform: Interactive 3D visual workspace to analyze high-dimensional vector embeddings, clustering, and similarity relationships. Built using React Three Fiber, Three.js, WebGL, FastAPI, FAISS, and PCA/t-SNE/UMAP.
+- AI Portfolio with Recruiter Chatbot: Portfolio site featuring an interactive recruiter chatbot powered by Retrieval-Augmented Generation (RAG) and LangChain.
+- RoleReadyResume: Full-stack AI-powered resume tailoring app using React, Node.js, and Groq API.
+- MCP Temperature Tool Server: MCP server in Python/FastAPI for async OpenWeatherMap operations.
+- Deep Research MCP Server: Deep Research MCP server with source credibility ranking using Python, FastAPI, and JSON-RPC.
 
 EDUCATION:
 - B.Tech Electrical and Computer Engineering, Amrita Vishwa Vidyapeetham, 2024, CGPA: 7.5/10
@@ -197,8 +197,8 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
 
   const handleDownloadResume = () => {
     const link = document.createElement("a");
-    link.href = `${import.meta.env.BASE_URL}Kesava Sravan Hariyapuraju Resume.pdf`;
-    link.download = "Kesava Sravan Hariyapuraju Resume.pdf";
+    link.href = `${import.meta.env.BASE_URL}resumekesavasravan.pdf`;
+    link.download = "resumekesavasravan.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

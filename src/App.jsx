@@ -26,9 +26,7 @@ function HomeContent({ tourStep }) {
       >
         <h2 className="section-title">Professional Summary</h2>
         <div className="summary-content">
-          <p>Software Engineer specializing in AI-enabled backend systems and automation solutions, with experience in Generative AI, RAG-based applications, and agentic AI workflows.</p>
-          <p>Skilled in building scalable APIs and integrating AI capabilities with enterprise applications. Proficient in Java, Spring Boot, LangChain, and vector databases for production-grade systems.</p>
-          <p>Passionate about AI/ML applications, agentic systems, and enterprise software development that delivers real-world impact.</p>
+          <p>Applied AI Specialist with hands-on experience architecting, scaling, and deploying production AI systems and Agentic workflows. Skilled in bridging enterprise customer requirements with robust AI architecture, leveraging LLMs (GPT, Claude, Gemini), Model Context Protocol (MCP), LangGraph, and RAG pipelines powered by FastAPI and cloud containerization. Proven track record of end-to-end technical ownership, enterprise API integrations, vector databases, and production monitoring for high-reliability AI applications.</p>
         </div>
       </motion.section>
 
@@ -43,18 +41,16 @@ function HomeContent({ tourStep }) {
         <h2 className="section-title">Professional Experience</h2>
         <div className="experience-item glass-panel">
           <div className="experience-header">
-            <h3 className="position-title">Systems Engineer</h3>
+            <h3 className="position-title">System Engineer</h3>
             <span className="company-name" style={{ color: '#667eea', fontWeight: '600' }}>Publicis Sapient, Bengaluru</span>
             <span className="duration" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)' }}><Calendar size={16} /> Feb 2025 – Present</span>
           </div>
           <ul className="experience-list">
-            <li>Designed and developed scalable microservices using Java and Spring Boot to support enterprise and AI-enabled workflows.</li>
-            <li>Built secure REST APIs with JWT authentication and role-based access control for distributed systems.</li>
-            <li>Developed backend services enabling AI-driven workflows and system integrations.</li>
-            <li>Improved performance through database optimization and efficient query design in PostgreSQL and MySQL.</li>
-            <li>Implemented CI/CD pipelines using Jenkins and Docker for automated deployments.</li>
-            <li>Established monitoring using Prometheus and Grafana to improve system reliability.</li>
-            <li>Developed unit and integration tests using JUnit and Mockito for production stability.</li>
+            <li>Architected and deployed production AI agent workflows using Agentic Studio and Model Context Protocol (MCP) servers, integrating enterprise APIs to automate complex operational workloads.</li>
+            <li>Engineered high-performance semantic search pipelines utilizing multi-provider vector embeddings and FAISS vector databases, cutting retrieval latency by 40% while improving query accuracy.</li>
+            <li>Streamlined containerized microservices deployment with Docker, Docker Compose, and Jenkins CI/CD pipelines, driving high availability, zero-downtime releases, and 99.9% deployment reliability.</li>
+            <li>Implemented comprehensive production monitoring and observability infrastructure using Prometheus and Grafana to track LLM token metrics, API latencies, and agent execution health in real time.</li>
+            <li>Partnered directly with cross-functional enterprise stakeholders in a technical consulting capacity to translate business constraints into scalable, production-ready AI solution architectures.</li>
           </ul>
         </div>
       </motion.section>
@@ -73,32 +69,40 @@ function HomeContent({ tourStep }) {
           <div className="bento-item medium">
             <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Languages</h4>
             <div className="skill-tags">
-              <span className="skill-tag">Java</span>
               <span className="skill-tag">Python</span>
-              <span className="skill-tag">C</span>
+              <span className="skill-tag">Java</span>
               <span className="skill-tag">SQL</span>
+              <span className="skill-tag">C</span>
             </div>
           </div>
           <div className="bento-item medium">
             <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Backend & APIs</h4>
             <div className="skill-tags">
+              <span className="skill-tag">FastAPI</span>
               <span className="skill-tag">Spring Boot</span>
-              <span className="skill-tag">Spring Security</span>
-              <span className="skill-tag">Spring Data JPA</span>
               <span className="skill-tag">REST APIs</span>
               <span className="skill-tag">Microservices</span>
               <span className="skill-tag">JWT</span>
+              <span className="skill-tag">RBAC</span>
+              <span className="skill-tag">Node.js</span>
             </div>
           </div>
           <div className="bento-item large">
-            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>AI & Generative AI</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>AI Engineering</h4>
             <div className="skill-tags">
-              <span className="skill-tag">LLMs</span>
+              <span className="skill-tag">LLMs (GPT-4/Claude/Gemini)</span>
+              <span className="skill-tag">Agentic AI</span>
+              <span className="skill-tag">Model Context Protocol (MCP)</span>
               <span className="skill-tag">RAG</span>
               <span className="skill-tag">LangChain</span>
-              <span className="skill-tag">NLP</span>
+              <span className="skill-tag">LangGraph</span>
+              <span className="skill-tag">Prompt Engineering</span>
+              <span className="skill-tag">Semantic Search</span>
+              <span className="skill-tag">FAISS</span>
               <span className="skill-tag">Hugging Face</span>
-              <span className="skill-tag">Agentic AI</span>
+              <span className="skill-tag">Sentence Transformers</span>
+              <span className="skill-tag">NLP</span>
+              <span className="skill-tag">scikit-learn</span>
             </div>
           </div>
           <div className="bento-item small">
@@ -106,26 +110,29 @@ function HomeContent({ tourStep }) {
             <div className="skill-tags">
               <span className="skill-tag">PostgreSQL</span>
               <span className="skill-tag">MySQL</span>
-              <span className="skill-tag">FAISS</span>
+              <span className="skill-tag">Vector Databases (FAISS)</span>
             </div>
           </div>
           <div className="bento-item large">
-            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Tools & DevOps</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Cloud & DevOps</h4>
             <div className="skill-tags">
-              <span className="skill-tag">Git</span>
               <span className="skill-tag">Docker</span>
+              <span className="skill-tag">Docker Compose</span>
+              <span className="skill-tag">Kubernetes</span>
               <span className="skill-tag">Jenkins</span>
-              <span className="skill-tag">Prometheus</span>
-              <span className="skill-tag">Grafana</span>
-              <span className="skill-tag">Maven</span>
+              <span className="skill-tag">GitHub Actions</span>
+              <span className="skill-tag">CI/CD</span>
+              <span className="skill-tag">AWS</span>
+              <span className="skill-tag">Azure</span>
+              <span className="skill-tag">GCP</span>
               <span className="skill-tag">Linux</span>
             </div>
           </div>
           <div className="bento-item small">
-            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Automation</h4>
+            <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>Observability</h4>
             <div className="skill-tags">
-              <span className="skill-tag">Power Automate</span>
-              <span className="skill-tag">Copilot</span>
+              <span className="skill-tag">Prometheus</span>
+              <span className="skill-tag">Grafana</span>
             </div>
           </div>
         </div>
@@ -197,7 +204,7 @@ function HomeContent({ tourStep }) {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <a href={`${import.meta.env.BASE_URL}Kesava Sravan Hariyapuraju Resume.pdf`} download className="download-btn" style={{ fontSize: '1.2rem', padding: '1rem 3rem' }}>
+        <a href={`${import.meta.env.BASE_URL}resumekesavasravan.pdf`} download className="download-btn" style={{ fontSize: '1.2rem', padding: '1rem 3rem' }}>
           <Download size={24} />
           Download Resume
         </a>
@@ -210,7 +217,7 @@ const TOUR_STEPS = [
   {
     id: "tour-header",
     title: "Welcome to Sravan's Portfolio 👋",
-    content: "Let's take a quick interactive tour to show you around. This is the main header introducing Sravan, Systems Engineer at Publicis Sapient.",
+    content: "Let's take a quick interactive tour to show you around. This is the main header introducing Sravan, System Engineer at Publicis Sapient.",
   },
   {
     id: "tour-summary",
@@ -340,7 +347,7 @@ export default function Portfolio() {
                   <img src={`${import.meta.env.BASE_URL}sravan.jpeg`} alt="Kesava Sravan" className="profile-image" />
                 </div>
                 <h1 className="main-title">Hariyapuraju Kesava Sravan</h1>
-                <p className="job-title" style={{ fontFamily: 'Outfit, sans-serif' }}>Systems Engineer @ Publicis Sapient</p>
+                <p className="job-title" style={{ fontFamily: 'Outfit, sans-serif' }}>System Engineer @ Publicis Sapient</p>
                 <p className="location" style={{ fontFamily: 'Outfit, sans-serif', marginTop: '1rem' }}><MapPin size={18} /> Bengaluru, Karnataka, India</p>
               </motion.div>
             </header>
