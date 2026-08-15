@@ -306,3 +306,81 @@
     bottom: 1rem;
   }
 }
+
+/* Markdown Styles for Chatbot Bubble */
+.chatbot-bubble p.chatbot-paragraph {
+  margin: 0 0 0.5rem 0;
+}
+.chatbot-bubble p.chatbot-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.chatbot-bubble ul.chatbot-list,
+.chatbot-bubble ol.chatbot-list {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+}
+.chatbot-bubble ul.chatbot-list {
+  list-style-type: disc;
+}
+.chatbot-bubble ol.chatbot-list {
+  list-style-type: decimal;
+}
+.chatbot-bubble li {
+  margin-bottom: 0.25rem;
+}
+.chatbot-bubble li:last-child {
+  margin-bottom: 0;
+}
+
+.chatbot-bubble h1.chatbot-h1,
+.chatbot-bubble h2.chatbot-h2,
+.chatbot-bubble h3.chatbot-h3,
+.chatbot-bubble h4.chatbot-h4,
+.chatbot-bubble h5.chatbot-h5,
+.chatbot-bubble h6.chatbot-h6 {
+  margin: 0.75rem 0 0.5rem 0;
+  font-weight: 600;
+  color: inherit;
+}
+.chatbot-bubble h1.chatbot-h1 { font-size: 1.15rem; }
+.chatbot-bubble h2.chatbot-h2 { font-size: 1.1rem; }
+.chatbot-bubble h3.chatbot-h3 { font-size: 1.05rem; }
+.chatbot-bubble h4.chatbot-h4 { font-size: 1rem; }
+.chatbot-bubble h5.chatbot-h5 { font-size: 0.95rem; }
+.chatbot-bubble h6.chatbot-h6 { font-size: 0.9rem; }
+
+.chatbot-bubble a.chatbot-link {
+  color: #3b82f6;
+  text-decoration: underline;
+  word-break: break-all;
+}
+.chatbot-bubble a.chatbot-link:hover {
+  color: #60a5fa;
+}
+
+.chatbot-light .chatbot-bubble a.chatbot-link {
+  color: #2563eb;
+}
+.chatbot-light .chatbot-bubble a.chatbot-link:hover {
+  color: #1d4ed8;
+}
+
+.chatbot-bubble code.chatbot-inline-code {
+  background: rgba(148, 163, 184, 0.15);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.85em;
+}
+
+.chatbot-bubble pre.chatbot-code-block {
+  background: rgba(15, 23, 42, 0.95);
+  color: #f8fafc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+  font-family: monospace;
+  font-size: 0.85rem;
+}

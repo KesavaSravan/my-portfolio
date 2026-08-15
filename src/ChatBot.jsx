@@ -9,9 +9,9 @@ Your goal is to provide clear, easy-to-read answers about him based on the provi
 You have access to tools that let you navigate and interact with the website on behalf of the user. Whenever a user asks to see a section, view projects, change the theme, or download his resume, you MUST call the appropriate tool to execute their request.
 
 CRITICAL FORMATTING RULES:
-1. DO NOT use markdown formatting like **bold**, *italics*, or # headers (the chat does not render markdown, so asterisks will look broken).
+1. Use markdown formatting like **bold** (e.g., for headers or highlighting important skills/technologies) and list formats. The chatbot interface parses and renders markdown correctly.
 2. Write in short, easily readable paragraphs separated by blank lines.
-3. Use plain bullet points (-) for listing skills or projects.
+3. Use bullet points (-) for listing skills, experience, or projects. Bold the key terms or titles to make them stand out.
 4. Keep answers friendly, conversational, and avoid giant walls of text.
 
 NAME: Hariyapuraju Kesava Sravan
@@ -32,12 +32,12 @@ EXPERIENCE:
 - Partnered directly with enterprise stakeholders in a technical consulting capacity to translate business constraints into scalable AI architectures
 
 SKILLS:
-- AI Engineering: LLMs (GPT-4, Claude, Gemini), Agentic AI, Model Context Protocol (MCP), RAG, LangChain, LangGraph, Prompt Engineering, Semantic Search, FAISS, Hugging Face, Sentence Transformers, NLP, scikit-learn
-- Languages: Python, Java, SQL, C
-- Backend & APIs: FastAPI, Spring Boot, REST APIs, Microservices, JWT, RBAC, Node.js
-- Cloud & DevOps: Docker, Docker Compose, Kubernetes, Jenkins, GitHub Actions, CI/CD, AWS, Azure, GCP, Linux
-- Databases: PostgreSQL, MySQL, Vector Databases (FAISS)
-- Observability & Monitoring: Prometheus, Grafana
+- **AI Engineering** – LLMs (GPT‑4, Claude, Gemini), Agentic AI, Model Context Protocol (MCP), Retrieval‑Augmented Generation, LangChain, LangGraph, Prompt Engineering, Semantic Search, FAISS, Hugging Face, Sentence Transformers, NLP, scikit‑learn
+- **Programming Languages** – Python, Java, SQL, C
+- **Backend & APIs** – FastAPI, Spring Boot, REST APIs, Microservices, JWT, RBAC, Node.js
+- **Cloud & DevOps** – Docker, Docker Compose, Kubernetes, Jenkins, GitHub Actions, CI/CD, AWS, Azure, GCP, Linux
+- **Databases** – PostgreSQL, MySQL, Vector Databases (FAISS)
+- **Observability & Monitoring** – Prometheus, Grafana
 
 PROJECTS:
 - AI Vector Space Visualization Platform: Interactive 3D visual workspace to analyze high-dimensional vector embeddings, clustering, and similarity relationships. Built using React Three Fiber, Three.js, WebGL, FastAPI, FAISS, and PCA/t-SNE/UMAP.
@@ -118,6 +118,245 @@ const QUICK_REPLIES = [
   "What is his backend stack?",
   "Are you open to new roles?",
 ];
+
+// A helper to parse basic markdown tags to React elements safely
+const parseMarkdown = (text) => {
+  if (!text) return "";
+
+  // Split content by double newline or newline followed by header/list to get distinct blocks
+  const lines = text.split("\n");
+  const blocks = [];
+  let currentList = [];
+  let inCodeBlock = false;
+  let codeLanguage = "";
+  let codeLines = [];
+
+  const renderInline = (str) => {
+    // Process markdown elements like bold, italic, code, links
+    let parts = [{ type: "text", content: str }];
+
+    // 1. Inline code: `code`
+    parts = parts.flatMap((part) => {
+      if (part.type !== "text") return part;
+      const subParts = [];
+      const regex = /`([^`]+)`/g;
+      let lastIndex = 0;
+      let match;
+      while ((match = regex.exec(part.content)) !== null) {
+        if (match.index > lastIndex) {
+          subParts.push({ type: "text", content: part.content.substring(lastIndex, match.index) });
+        }
+        subParts.push({ type: "code", content: match[1] });
+        lastIndex = regex.lastIndex;
+      }
+      if (lastIndex < part.content.length) {
+        subParts.push({ type: "text", content: part.content.substring(lastIndex) });
+      }
+      return subParts;
+    });
+
+    // 2. Bold: **text** or __text__
+    parts = parts.flatMap((part) => {
+      if (part.type !== "text") return part;
+      const subParts = [];
+      const regex = /\*\*([^*]+)\*\*|__([^_]+)__/g;
+      let lastIndex = 0;
+      let match;
+      while ((match = regex.exec(part.content)) !== null) {
+        if (match.index > lastIndex) {
+          subParts.push({ type: "text", content: part.content.substring(lastIndex, match.index) });
+        }
+        const boldText = match[1] || match[2];
+        subParts.push({ type: "bold", content: boldText });
+        lastIndex = regex.lastIndex;
+      }
+      if (lastIndex < part.content.length) {
+        subParts.push({ type: "text", content: part.content.substring(lastIndex) });
+      }
+      return subParts;
+    });
+
+    // 3. Italic: *text* or _text_
+    parts = parts.flatMap((part) => {
+      if (part.type !== "text") return part;
+      const subParts = [];
+      const regex = /\*([^*]+)\*|_([^_]+)_/g;
+      let lastIndex = 0;
+      let match;
+      while ((match = regex.exec(part.content)) !== null) {
+        if (match.index > lastIndex) {
+          subParts.push({ type: "text", content: part.content.substring(lastIndex, match.index) });
+        }
+        const italicText = match[1] || match[2];
+        subParts.push({ type: "italic", content: italicText });
+        lastIndex = regex.lastIndex;
+      }
+      if (lastIndex < part.content.length) {
+        subParts.push({ type: "text", content: part.content.substring(lastIndex) });
+      }
+      return subParts;
+    });
+
+    // 4. Links: [text](url)
+    parts = parts.flatMap((part) => {
+      if (part.type !== "text") return part;
+      const subParts = [];
+      const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+      let lastIndex = 0;
+      let match;
+      while ((match = regex.exec(part.content)) !== null) {
+        if (match.index > lastIndex) {
+          subParts.push({ type: "text", content: part.content.substring(lastIndex, match.index) });
+        }
+        subParts.push({ type: "link", text: match[1], url: match[2] });
+        lastIndex = regex.lastIndex;
+      }
+      if (lastIndex < part.content.length) {
+        subParts.push({ type: "text", content: part.content.substring(lastIndex) });
+      }
+      return subParts;
+    });
+
+    return parts.map((part, index) => {
+      if (part.type === "bold") {
+        return <strong key={index}>{part.content}</strong>;
+      }
+      if (part.type === "italic") {
+        return <em key={index}>{part.content}</em>;
+      }
+      if (part.type === "code") {
+        return <code key={index} className="chatbot-inline-code">{part.content}</code>;
+      }
+      if (part.type === "link") {
+        return (
+          <a
+            key={index}
+            href={part.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="chatbot-link"
+          >
+            {part.text}
+          </a>
+        );
+      }
+      return part.content;
+    });
+  };
+
+  const flushList = () => {
+    if (currentList.length > 0) {
+      blocks.push(
+        <ul key={`list-${blocks.length}`} className="chatbot-list">
+          {currentList.map((item, index) => (
+            <li key={index}>{renderInline(item)}</li>
+          ))}
+        </ul>
+      );
+      currentList = [];
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Handle code blocks
+    if (line.startsWith("```")) {
+      if (inCodeBlock) {
+        // End code block
+        blocks.push(
+          <pre key={`code-${blocks.length}`} className="chatbot-code-block">
+            <code className={codeLanguage ? `language-${codeLanguage}` : ""}>
+              {codeLines.join("\n")}
+            </code>
+          </pre>
+        );
+        codeLines = [];
+        inCodeBlock = false;
+      } else {
+        flushList();
+        inCodeBlock = true;
+        codeLanguage = line.slice(3).trim();
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeLines.push(line);
+      continue;
+    }
+
+    const trimmedLine = line.trim();
+
+    // Handle empty lines
+    if (trimmedLine === "") {
+      flushList();
+      continue;
+    }
+
+    // Handle headers (e.g. ### Header)
+    if (trimmedLine.startsWith("#")) {
+      flushList();
+      const match = trimmedLine.match(/^(#{1,6})\s+(.*)$/);
+      if (match) {
+        const level = match[1].length;
+        const text = match[2];
+        const HeaderTag = `h${Math.min(level + 1, 6)}`; // h1->h2 to fit within bubble sizes
+        blocks.push(
+          <HeaderTag key={`header-${blocks.length}`} className={`chatbot-h${level}`}>
+            {renderInline(text)}
+          </HeaderTag>
+        );
+        continue;
+      }
+    }
+
+    // Handle bullet list items (starts with -, *, +)
+    const listMatch = line.match(/^(\s*)[-*+]\s+(.*)$/);
+    if (listMatch) {
+      const content = listMatch[2];
+      currentList.push(content);
+      continue;
+    }
+
+    // Handle numbered list items (starts with 1., 2. etc.)
+    const numListMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
+    if (numListMatch) {
+      flushList();
+      const content = numListMatch[2];
+      blocks.push(
+        <ol key={`ol-${blocks.length}`} className="chatbot-list chatbot-ordered-list">
+          <li>{renderInline(content)}</li>
+        </ol>
+      );
+      continue;
+    }
+
+    // Paragraph text (group consecutive lines of paragraph)
+    flushList();
+    let paragraphLines = [line];
+    while (
+      i + 1 < lines.length &&
+      lines[i + 1].trim() !== "" &&
+      !lines[i + 1].trim().startsWith("#") &&
+      !lines[i + 1].trim().startsWith("```") &&
+      !lines[i + 1].match(/^(\s*)[-*+]\s+/) &&
+      !lines[i + 1].match(/^(\s*)\d+\.\s+/)
+    ) {
+      i++;
+      paragraphLines.push(lines[i]);
+    }
+    blocks.push(
+      <p key={`p-${blocks.length}`} className="chatbot-paragraph">
+        {renderInline(paragraphLines.join(" "))}
+      </p>
+    );
+  }
+
+  flushList();
+
+  return <>{blocks}</>;
+};
 
 export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen, setIsOpen: setExternalIsOpen, tourStep = -1 }) {
   const [internalIsOpen, setInternalIsOpen] = useState(true);
@@ -244,7 +483,7 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
           Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: "openai/gpt-oss-120b",
           max_tokens: 512,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
@@ -275,7 +514,7 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
           content: assistantMessage.content || "",
           tool_calls: toolCalls
         };
-        
+
         const toolResponses = [];
         for (const toolCall of toolCalls) {
           const name = toolCall.function.name;
@@ -286,7 +525,7 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
           } catch (e) {
             console.error("Failed to parse tool call arguments", e);
           }
-          
+
           let resultText = "";
           try {
             if (name === "scroll_to_section") {
@@ -321,7 +560,7 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
             Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
           },
           body: JSON.stringify({
-            model: "llama-3.3-70b-versatile",
+            model: "openai/gpt-oss-120b",
             max_tokens: 512,
             messages: [
               { role: "system", content: SYSTEM_PROMPT },
@@ -412,7 +651,9 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
                 <div className="chatbot-message-icon">
                   {msg.role === "assistant" ? <Bot size={14} /> : <User size={14} />}
                 </div>
-                <div className="chatbot-bubble">{msg.content}</div>
+                <div className="chatbot-bubble">
+                  {msg.role === "assistant" ? parseMarkdown(msg.content) : msg.content}
+                </div>
               </div>
             ))}
             {loading && (
@@ -429,9 +670,9 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
           {/* Quick Replies */}
           <div className="chatbot-quick-replies">
             {activeChips.map((reply, i) => (
-              <button 
-                key={i} 
-                className="chatbot-chip" 
+              <button
+                key={i}
+                className="chatbot-chip"
                 onClick={() => sendMessage(reply)}
                 disabled={loading}
               >
