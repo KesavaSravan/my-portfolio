@@ -150,6 +150,68 @@ h1, h2, h3, h4, h5, h6, .main-title, .section-title {
   gap: 0.5rem;
 }
 
+/* Header CTA Buttons */
+.header-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.header-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.header-cta-btn.primary {
+  background: white;
+  color: #1e293b;
+}
+
+.header-cta-btn.primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  background: #f8fafc;
+}
+
+.header-cta-btn.secondary {
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.header-cta-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.header-cta-btn.outline {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.header-cta-btn.outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: white;
+  transform: translateY(-3px) scale(1.03);
+}
+
 /* Contact Section */
 .contact-section {
   padding: 3rem 2rem;
@@ -158,7 +220,7 @@ h1, h2, h3, h4, h5, h6, .main-title, .section-title {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -181,6 +243,11 @@ h1, h2, h3, h4, h5, h6, .main-title, .section-title {
 .contact-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-heavy);
+}
+
+.contact-card.resume:hover {
+  color: #06b6d4;
+  border-color: rgba(6, 182, 212, 0.5);
 }
 
 .contact-card.linkedin:hover {
@@ -731,190 +798,4 @@ html {
   box-shadow: var(--shadow-heavy);
   border-color: rgba(255, 255, 255, 0.15);
 }
-
-/* Tour System */
-.tour-trigger-fab {
-  position: fixed;
-  bottom: 6.5rem;
-  right: 2rem;
-  z-index: 9997;
-  padding: 0.75rem 1.25rem;
-  border-radius: 50px;
-  border: none;
-  background: var(--gradient-secondary);
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
-  font-family: 'Outfit', sans-serif;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
-
-.tour-trigger-fab:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
-}
-
-
-/* Pulsing Tour Highlight Glow */
-.tour-highlighted {
-  outline: 3px solid #06b6d4;
-  outline-offset: 4px;
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.5) !important;
-  animation: tourPulse 2s infinite ease-in-out;
-  transition: all 0.3s ease;
-}
-
-.portfolio-header.tour-highlighted {
-  outline-offset: -4px;
-}
-
-@keyframes tourPulse {
-  0% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); outline-color: rgba(6, 182, 212, 0.7); }
-  50% { box-shadow: 0 0 30px rgba(6, 182, 212, 0.8); outline-color: rgba(6, 182, 212, 1); }
-  100% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); outline-color: rgba(6, 182, 212, 0.7); }
-}
-
-@media (max-width: 480px) {
-  .tour-trigger-fab {
-    right: 1rem;
-    bottom: 5.5rem;
-  }
-}
-
-/* Standalone Tour Card */
-.standalone-tour-card {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 450px;
-  padding: 1.5rem;
-  z-index: 9999;
-  background: rgba(26, 26, 36, 0.85) !important;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  border-radius: 16px;
-  animation: slideUp 0.3s ease-out;
-  color: var(--text-primary);
-  font-family: 'Outfit', sans-serif;
-}
-
-@keyframes slideUp {
-  from {
-    transform: translate(-50%, 100px);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
-}
-
-.tour-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.tour-card-header h3 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin: 0;
-  color: var(--text-primary);
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.tour-card-progress {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  font-weight: 500;
-}
-
-.tour-card-content {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  margin-bottom: 1.25rem;
-}
-
-.tour-card-actions {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
-}
-
-.tour-card-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tour-card-btn-primary {
-  background: var(--gradient-primary);
-  color: white;
-}
-
-.tour-card-btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
-}
-
-.tour-card-btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.tour-card-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.tour-card-btn-danger {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.1);
-  margin-right: auto;
-}
-
-.tour-card-btn-danger:hover {
-  background: rgba(239, 68, 68, 0.25);
-}
-
-@media (max-width: 768px) {
-  .standalone-tour-card {
-    width: 90% !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    bottom: 1.5rem !important;
-  }
-
-  /* Hide the chatbot FAB and window during early steps (0-3) on mobile/tablet to avoid layout overlap */
-  .tour-active:not(.tour-step-4) .chatbot-fab,
-  .tour-active:not(.tour-step-4) .chatbot-window {
-    display: none !important;
-  }
-
-  /* Shift the tour card to the top on the final step (Step 4) on mobile/tablet so it doesn't cover the chatbot window */
-  .tour-step-4 .standalone-tour-card {
-    bottom: auto !important;
-    top: 5.5rem !important;
-  }
-}
+

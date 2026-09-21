@@ -22,7 +22,7 @@ PHONE: +91-93984 95822
 CURRENT ROLE: System Engineer at Publicis Sapient (Feb 2025 – Present)
 
 SUMMARY:
-Applied AI Specialist with hands-on experience architecting, scaling, and deploying production AI systems and Agentic workflows. Skilled in bridging enterprise customer requirements with robust AI architecture, leveraging LLMs (GPT, Claude, Gemini), Model Context Protocol (MCP), LangGraph, and RAG pipelines powered by FastAPI and cloud containerization. Proven track record of end-to-end technical ownership, enterprise API integrations, vector databases, and production monitoring for high-reliability AI applications.
+Applied AI Specialist with hands-on experience architecting, scaling, and deploying production AI systems and Agentic workflows. Skilled in bridging enterprise customer requirements with robust AI architecture, leveraging LLMs (Groq, GPT, Claude, Gemini), Model Context Protocol (MCP), LangGraph, and RAG pipelines powered by FastAPI and cloud containerization. Proven track record of end-to-end technical ownership, enterprise API integrations, vector databases, and production monitoring for high-reliability AI applications.
 
 EXPERIENCE:
 - Architected and deployed production AI agent workflows using Agentic Studio and Model Context Protocol (MCP) servers, automating complex operational workloads
@@ -32,14 +32,15 @@ EXPERIENCE:
 - Partnered directly with enterprise stakeholders in a technical consulting capacity to translate business constraints into scalable AI architectures
 
 SKILLS:
-- **AI Engineering** – LLMs (GPT‑4, Claude, Gemini), Agentic AI, Model Context Protocol (MCP), Retrieval‑Augmented Generation, LangChain, LangGraph, Prompt Engineering, Semantic Search, FAISS, Hugging Face, Sentence Transformers, NLP, scikit‑learn
+- **AI Engineering** – LLMs (Groq, GPT, Claude, Gemini), Agentic AI, Model Context Protocol (MCP), Retrieval-Augmented Generation (RAG), Hybrid Search, LangChain, LCEL, LangGraph, Structured Output (Pydantic), Prompt Engineering, Semantic Search, FAISS, ChromaDB, Hugging Face, Sentence Transformers, Multimodal / Vision QA, NLP, scikit-learn
 - **Programming Languages** – Python, Java, SQL, C
-- **Backend & APIs** – FastAPI, Spring Boot, REST APIs, Microservices, JWT, RBAC, Node.js
-- **Cloud & DevOps** – Docker, Docker Compose, Kubernetes, Jenkins, GitHub Actions, CI/CD, AWS, Azure, GCP, Linux
-- **Databases** – PostgreSQL, MySQL, Vector Databases (FAISS)
-- **Observability & Monitoring** – Prometheus, Grafana
+- **Backend & APIs** – FastAPI, Spring Boot, REST APIs, Microservices, JWT, RBAC, Node.js
+- **Cloud & DevOps** – Docker, Docker Compose, Kubernetes, Jenkins, GitHub Actions, CI/CD, AWS, Azure, GCP, Linux
+- **Databases** – PostgreSQL, MySQL, Vector Databases (FAISS, ChromaDB)
+- **Observability & Monitoring** – Prometheus, Grafana, LangSmith
 
 PROJECTS:
+- LangChain & AI Engineering Learning Path: Production-grade modular curriculum and repository for mastering LangChain, Agentic AI, and stateful architectures. Features multi-provider support (Groq, Gemini, OpenAI, Anthropic), LCEL chains, LangGraph, RAG, tool calling, and multimodal vision QA.
 - AI Vector Space Visualization Platform: Interactive 3D visual workspace to analyze high-dimensional vector embeddings, clustering, and similarity relationships. Built using React Three Fiber, Three.js, WebGL, FastAPI, FAISS, and PCA/t-SNE/UMAP.
 - AI Portfolio with Recruiter Chatbot: Portfolio site featuring an interactive recruiter chatbot powered by Retrieval-Augmented Generation (RAG) and LangChain.
 - RoleReadyResume: Full-stack AI-powered resume tailoring app using React, Node.js, and Groq API.
@@ -113,6 +114,7 @@ const BOT_TOOLS = [
 ];
 
 const QUICK_REPLIES = [
+  "📄 Download Resume",
   "Tell me about Sravan",
   "What projects has he built?",
   "What is his backend stack?",
@@ -358,7 +360,7 @@ const parseMarkdown = (text) => {
   return <>{blocks}</>;
 };
 
-export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen, setIsOpen: setExternalIsOpen, tourStep = -1 }) {
+export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen, setIsOpen: setExternalIsOpen }) {
   const [internalIsOpen, setInternalIsOpen] = useState(true);
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
   const setIsOpen = setExternalIsOpen !== undefined ? setExternalIsOpen : setInternalIsOpen;
@@ -471,6 +473,11 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
     setLoading(true);
 
     try {
+      const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+      if (!apiKey || apiKey === "your_groq_api_key_here") {
+        throw new Error("Groq API key not configured. Please add VITE_GROQ_API_KEY in your .env file or deployment settings.");
+      }
+
       const conversationHistory = [
         ...messages,
         userMessage
@@ -480,7 +487,7 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+          Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
           model: "openai/gpt-oss-120b",
@@ -557,7 +564,7 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+            Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
             model: "openai/gpt-oss-120b",
@@ -627,7 +634,7 @@ export default function ChatBot({ darkMode, setDarkMode, isOpen: externalIsOpen,
 
       {/* Chat Window */}
       {isOpen && (
-        <div className={`chatbot-window ${darkMode ? "chatbot-dark" : "chatbot-light"} ${tourStep === 4 ? "tour-highlighted" : ""}`} id="tour-chatbot">
+        <div className={`chatbot-window ${darkMode ? "chatbot-dark" : "chatbot-light"}`} id="tour-chatbot">
           {/* Header */}
           <div className="chatbot-header">
             <div className="chatbot-header-info">

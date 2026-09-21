@@ -7,9 +7,9 @@ A highly polished, professional portfolio web application built with React, Vite
 - **Interactive Navigation**: A floating, vertically draggable navigation bar with elastic bounce physics and screen boundary constraints, improving mobile and desktop navigation.
 - **Multi-Page Routing**: Implements React Router for seamless navigation to a dedicated `/projects` page and anchors without full page reloads.
 - **Fluid Animations**: Scroll-linked fade and stagger animations powered by `framer-motion` ensure elements organically cascade into view.
-- **AI Chatbot Assistant**: Embedded conversational AI powered by Groq (`llama-3.3-70b-versatile`) acts as a personal agent, immediately answering recruiter questions about experience and skills.
+- **AI Chatbot Assistant**: Embedded conversational AI powered by Groq (`openai/gpt-oss-120b`) acts as a personal agent, immediately answering recruiter questions about experience and skills.
 - **Interactive Quick-Reply Chips**: Suggested query chips enable users to quickly ask about Sravan's stack, roles, or background with a single click.
-- **Tour Mode**: Standalone guided website walkthrough. It scrolls the page and highlights elements step-by-step via an onboarding card.
+- **Quick 1-Click Resume Access**: Integrated Hero CTAs, floating navbar actions, and chatbot quick-replies for instantaneous resume download and in-browser preview.
 - **Dynamic Theming**: An intuitive structural toggle between deep OLED Dark mode and translucent Light mode.
 
 ## 🛠 Tech Stack

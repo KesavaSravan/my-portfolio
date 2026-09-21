@@ -40,5 +40,12 @@ export const projectsData = [
     description: "An interactive 3D platform that projects high-dimensional embedding vectors into a visual workspace to analyze clustering, similarity, and relationships. Built with React Three Fiber, Three.js, and WebGL custom shaders leveraging instanced rendering for 100,000+ vectors. Supports PCA, t-SNE, UMAP, K-Means/DBSCAN clustering, and FAISS-based nearest-neighbor similarity search.",
     technologies: "React, React Three Fiber, Three.js, WebGL, FastAPI, Python, FAISS, UMAP, t-SNE, PCA",
     link: "https://github.com/KesavaSravan/vector-space-platform"
+  },
+  {
+    id: 7,
+    title: "LangChain & AI Engineering Learning Path",
+    description: "A production-grade, modular curriculum and repository for mastering LangChain, Agentic AI, and stateful architectures. Features seamless multi-provider support (Groq, Google Gemini, OpenAI, Anthropic), LCEL chains, conversational memory, advanced RAG evaluation, LangGraph state machines, structured outputs, multi-agent workflows, and multimodal vision QA.",
+    technologies: "Python, LangChain, LangGraph, Groq, Google Gemini, OpenAI, Anthropic, FAISS, ChromaDB, Pydantic, RAG",
+    link: "https://github.com/KesavaSravan/Langchain-Learning"
   }
 ];

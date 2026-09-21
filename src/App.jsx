@@ -1,6 +1,6 @@
-import { Github, Linkedin, Mail, Phone, Sun, Moon, Download, MapPin, Calendar, ArrowRight, Home, Code, Briefcase } from "lucide-react";
+import { Github, Linkedin, Mail, Phone, Sun, Moon, Download, MapPin, Calendar, ArrowRight, Home, Code, Briefcase, FileText } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import ChatBot from "./ChatBot";
 import ProjectsPage from "./ProjectsPage";
@@ -13,12 +13,12 @@ const fadeUpVariant = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-function HomeContent({ tourStep }) {
+function HomeContent() {
   return (
     <main className="main-content">
       {/* Summary */}
       <motion.section
-        className={`content-section ${tourStep === 1 ? "tour-highlighted" : ""}`}
+        className="content-section"
         id="tour-summary"
         initial="hidden"
         whileInView="visible"
@@ -27,7 +27,7 @@ function HomeContent({ tourStep }) {
       >
         <h2 className="section-title">Professional Summary</h2>
         <div className="summary-content">
-          <p>Applied AI Specialist with hands-on experience architecting, scaling, and deploying production AI systems and Agentic workflows. Skilled in bridging enterprise customer requirements with robust AI architecture, leveraging LLMs (GPT, Claude, Gemini), Model Context Protocol (MCP), LangGraph, and RAG pipelines powered by FastAPI and cloud containerization. Proven track record of end-to-end technical ownership, enterprise API integrations, vector databases, and production monitoring for high-reliability AI applications.</p>
+          <p>Applied AI Specialist with hands-on experience architecting, scaling, and deploying production AI systems and Agentic workflows. Skilled in bridging enterprise customer requirements with robust AI architecture, leveraging LLMs (Groq, GPT, Claude, Gemini), Model Context Protocol (MCP), LangGraph, and RAG pipelines powered by FastAPI and cloud containerization. Proven track record of end-to-end technical ownership, enterprise API integrations, vector databases, and production monitoring for high-reliability AI applications.</p>
         </div>
       </motion.section>
 
@@ -59,7 +59,7 @@ function HomeContent({ tourStep }) {
       {/* Technical Skills (Bento Grid) */}
       <motion.section
         id="skills"
-        className={`content-section ${tourStep === 2 ? "tour-highlighted" : ""}`}
+        className="content-section"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
@@ -91,18 +91,19 @@ function HomeContent({ tourStep }) {
           <div className="bento-item large">
             <h4 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: '600' }}>AI Engineering</h4>
             <div className="skill-tags">
-              <span className="skill-tag">LLMs (GPT-4/Claude/Gemini)</span>
+              <span className="skill-tag">LLMs (Groq / GPT / Claude / Gemini)</span>
               <span className="skill-tag">Agentic AI</span>
               <span className="skill-tag">Model Context Protocol (MCP)</span>
-              <span className="skill-tag">RAG</span>
-              <span className="skill-tag">LangChain</span>
+              <span className="skill-tag">RAG & Hybrid Search</span>
+              <span className="skill-tag">LangChain & LCEL</span>
               <span className="skill-tag">LangGraph</span>
+              <span className="skill-tag">Structured Output (Pydantic)</span>
               <span className="skill-tag">Prompt Engineering</span>
               <span className="skill-tag">Semantic Search</span>
-              <span className="skill-tag">FAISS</span>
+              <span className="skill-tag">FAISS & ChromaDB</span>
               <span className="skill-tag">Hugging Face</span>
               <span className="skill-tag">Sentence Transformers</span>
-              <span className="skill-tag">NLP</span>
+              <span className="skill-tag">Multimodal / Vision QA</span>
               <span className="skill-tag">scikit-learn</span>
             </div>
           </div>
@@ -111,7 +112,7 @@ function HomeContent({ tourStep }) {
             <div className="skill-tags">
               <span className="skill-tag">PostgreSQL</span>
               <span className="skill-tag">MySQL</span>
-              <span className="skill-tag">Vector Databases (FAISS)</span>
+              <span className="skill-tag">Vector DBs (FAISS, Chroma)</span>
             </div>
           </div>
           <div className="bento-item large">
@@ -134,6 +135,7 @@ function HomeContent({ tourStep }) {
             <div className="skill-tags">
               <span className="skill-tag">Prometheus</span>
               <span className="skill-tag">Grafana</span>
+              <span className="skill-tag">LangSmith</span>
             </div>
           </div>
         </div>
@@ -141,7 +143,7 @@ function HomeContent({ tourStep }) {
 
       {/* Projects */}
       <motion.section
-        className={`content-section ${tourStep === 3 ? "tour-highlighted" : ""}`}
+        className="content-section"
         id="tour-projects"
         initial="hidden"
         whileInView="visible"
@@ -214,40 +216,10 @@ function HomeContent({ tourStep }) {
   );
 }
 
-const TOUR_STEPS = [
-  {
-    id: "tour-header",
-    title: "Welcome to Sravan's Portfolio 👋",
-    content: "Let's take a quick interactive tour to show you around. This is the main header introducing Sravan, System Engineer at Publicis Sapient.",
-  },
-  {
-    id: "tour-summary",
-    title: "Professional Summary 📝",
-    content: "Here is a brief summary of Sravan's experience building scalable microservices and agentic AI systems.",
-  },
-  {
-    id: "skills",
-    title: "Technical Skills 🛠️",
-    content: "Sravan's technical capabilities in Java, Spring Boot, Python, Generative AI/RAG, and DevOps are organized here.",
-  },
-  {
-    id: "tour-projects",
-    title: "Featured Projects 🚀",
-    content: "Here are some featured projects, including the new AI Vector Space Visualization Platform! Click 'Show More' to see all projects.",
-  },
-  {
-    id: "tour-chatbot",
-    title: "AI Chat Assistant 💬",
-    content: "You can ask Sravan's AI assistant questions directly here at any time. It's powered by Llama 3.3 and Groq!",
-  }
-];
-
 export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(true);
-  const [tourStep, setTourStep] = useState(-1);
   const location = useLocation();
-  const navigate = useNavigate();
   const dragAreaRef = useRef(null);
 
   useEffect(() => {
@@ -262,18 +234,6 @@ export default function Portfolio() {
       window.scrollTo(0, 0);
     }
   }, [location.pathname, location.hash]);
-
-  const handleStartTour = () => {
-    if (location.pathname !== "/") {
-      navigate("/");
-    }
-    setTourStep(0);
-    setIsChatOpen(false);
-    setTimeout(() => {
-      const el = document.getElementById(TOUR_STEPS[0].id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300);
-  };
 
   const handleScrollToTop = (e) => {
     if (location.pathname === "/") {
@@ -300,7 +260,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className={`portfolio-container ${darkMode ? 'dark-theme' : 'light-theme'} ${tourStep !== -1 ? `tour-active tour-step-${tourStep}` : ""}`}>
+    <div className={`portfolio-container ${darkMode ? 'dark-theme' : 'light-theme'}`}>
 
       {/* Floating Navbar */}
       <div className="floating-nav-wrapper" ref={dragAreaRef}>
@@ -324,6 +284,10 @@ export default function Portfolio() {
             <div className="nav-icon"><Briefcase size={20} /></div>
             <span className="nav-label">Projects</span>
           </Link>
+          <a href={`${import.meta.env.BASE_URL}resumekesavasravan.pdf`} target="_blank" rel="noreferrer" title="Resume (PDF)">
+            <div className="nav-icon"><FileText size={20} /></div>
+            <span className="nav-label">Resume</span>
+          </a>
           <div className="nav-divider"></div>
           <button onClick={() => setDarkMode(!darkMode)} className="theme-toggle-vertical" title="Toggle Theme">
             <div className="nav-icon">{darkMode ? <Sun size={20} /> : <Moon size={20} />}</div>
@@ -336,7 +300,7 @@ export default function Portfolio() {
         <Route path="/" element={
           <>
             {/* Header */}
-            <header className={`portfolio-header ${tourStep === 0 ? "tour-highlighted" : ""}`} id="tour-header">
+            <header className="portfolio-header" id="tour-header">
               <div className="header-overlay"></div>
               <motion.div
                 className="header-content"
@@ -350,11 +314,27 @@ export default function Portfolio() {
                 <h1 className="main-title">Hariyapuraju Kesava Sravan</h1>
                 <p className="job-title" style={{ fontFamily: 'Outfit, sans-serif' }}>System Engineer @ Publicis Sapient</p>
                 <p className="location" style={{ fontFamily: 'Outfit, sans-serif', marginTop: '1rem' }}><MapPin size={18} /> Bengaluru, Karnataka, India</p>
+
+                {/* Hero Quick CTA Group */}
+                <div className="header-cta-group">
+                  <a href={`${import.meta.env.BASE_URL}resumekesavasravan.pdf`} download className="header-cta-btn primary">
+                    <Download size={18} />
+                    <span>Download Resume</span>
+                  </a>
+                  <a href={`${import.meta.env.BASE_URL}resumekesavasravan.pdf`} target="_blank" rel="noreferrer" className="header-cta-btn secondary">
+                    <FileText size={18} />
+                    <span>View Resume</span>
+                  </a>
+                  <Link to="/projects" className="header-cta-btn outline">
+                    <Briefcase size={18} />
+                    <span>Explore Projects</span>
+                  </Link>
+                </div>
               </motion.div>
             </header>
 
             {/* Contact */}
-            <section className="contact-section">
+            <section className="contact-section" id="contact">
               <motion.div
                 className="contact-grid"
                 initial={{ opacity: 0, y: 20 }}
@@ -362,6 +342,9 @@ export default function Portfolio() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
+                <a href={`${import.meta.env.BASE_URL}resumekesavasravan.pdf`} target="_blank" rel="noreferrer" className="contact-card glass-panel resume">
+                  <FileText size={24} /><span>Resume (PDF)</span>
+                </a>
                 <a href="https://github.com/kesavasravan" target="_blank" rel="noreferrer" className="contact-card glass-panel">
                   <Github size={24} /><span>GitHub</span>
                 </a>
@@ -377,11 +360,11 @@ export default function Portfolio() {
               </motion.div>
             </section>
 
-            <HomeContent tourStep={tourStep} />
+            <HomeContent />
           </>
         } />
         <Route path="/projects" element={
-          <ProjectsPage darkMode={darkMode} />
+          <ProjectsPage />
         } />
       </Routes>
 
@@ -389,73 +372,13 @@ export default function Portfolio() {
         <p style={{ fontFamily: 'Outfit, sans-serif' }}>© 2026 Hariyapuraju Kesava Sravan — Portfolio built with React & Framer Motion</p>
       </footer>
 
-      {/* Tour Mode Floating Trigger Pill */}
-      {tourStep === -1 && !isChatOpen && (
-        <button className="tour-trigger-fab" onClick={handleStartTour}>
-          <span>Tour Mode</span>
-        </button>
-      )}
-
-      {/* Standalone Tour Overlay Card */}
-      {tourStep !== -1 && (
-        <div className="standalone-tour-card glass-panel">
-          <div className="tour-card-header">
-            <h3>{TOUR_STEPS[tourStep].title}</h3>
-            <span className="tour-card-progress">{tourStep + 1} / {TOUR_STEPS.length}</span>
-          </div>
-          <p className="tour-card-content">{TOUR_STEPS[tourStep].content}</p>
-          <div className="tour-card-actions">
-            {tourStep > 0 && (
-              <button 
-                className="tour-card-btn tour-card-btn-secondary" 
-                onClick={() => {
-                  const prevStep = tourStep - 1;
-                  setTourStep(prevStep);
-                  const el = document.getElementById(TOUR_STEPS[prevStep].id);
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }}
-              >
-                Back
-              </button>
-            )}
-            <button 
-              className="tour-card-btn tour-card-btn-danger" 
-              onClick={() => {
-                if (tourStep === TOUR_STEPS.length - 1) {
-                  setIsChatOpen(true);
-                }
-                setTourStep(-1);
-              }}
-            >
-              {tourStep === TOUR_STEPS.length - 1 ? "Finish" : "Skip"}
-            </button>
-            {tourStep < TOUR_STEPS.length - 1 && (
-              <button 
-                className="tour-card-btn tour-card-btn-primary" 
-                onClick={() => {
-                  const nextStep = tourStep + 1;
-                  setTourStep(nextStep);
-                  const el = document.getElementById(TOUR_STEPS[nextStep].id);
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }}
-              >
-                Next
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* AI Chatbot */}
-      {(tourStep === -1 || tourStep === 4) && (
-        <ChatBot
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-          isOpen={tourStep === 4 ? true : isChatOpen}
-          setIsOpen={setIsChatOpen}
-          tourStep={tourStep}
-        />
-      )}
+      <ChatBot
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        isOpen={isChatOpen}
+        setIsOpen={setIsChatOpen}
+      />
 
       {/* Vercel Web Analytics */}
       <Analytics />
