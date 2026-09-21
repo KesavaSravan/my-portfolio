@@ -18,7 +18,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-export default function ProjectsPage({ darkMode }) {
+export default function ProjectsPage() {
   return (
     <main className="main-content" style={{ paddingTop: '8rem' }}>
       <motion.section 
